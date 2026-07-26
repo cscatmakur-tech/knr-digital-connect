@@ -201,6 +201,17 @@
   }
   .tx-amount.load{background:#DCE9FF;color:#0B1A33;}
   .tx-amount.payment{background:#D8F5E6;color:#063820;}
+
+  .amt-chip{
+    display:inline-block;font-family:'JetBrains Mono',monospace;font-weight:800;font-size:12.5px;
+    padding:5px 11px;border-radius:20px;white-space:nowrap;
+  }
+  .amt-chip.load{background:#DCE9FF;color:#0B1A33;}
+  .amt-chip.payment{background:#D8F5E6;color:#063820;}
+  .count-chip{
+    display:inline-block;font-family:'JetBrains Mono',monospace;font-weight:800;font-size:12.5px;
+    padding:5px 11px;border-radius:20px;background:var(--soft-fill-hover);color:var(--text);
+  }
   .empty-state{padding:40px 20px;text-align:center;color:var(--text-muted);font-size:13.5px;}
   .empty-state .signal-bars{color:var(--border);height:26px;margin-bottom:10px;}
   .empty-state .signal-bars span{width:6px;}
@@ -682,6 +693,12 @@
   function methodLabel(m){
     return {CASH:"Cash", UPI:"UPI", NETBANKING:"Net Banking"}[m] || "Cash";
   }
+  function amountChip(value, type){
+    return `<span class="amt-chip ${type==='payment'?'payment':'load'}">${fmtMoney(value)}</span>`;
+  }
+  function countChip(n){
+    return `<span class="count-chip">${n}</span>`;
+  }
 
   // ---------- storage (Google Sheets via Apps Script — free, in your Drive) ----------
   let notConfigured = GAS_URL.indexOf("PASTE_YOUR_WEB_APP_URL_HERE") !== -1;
@@ -754,8 +771,8 @@
       const sum = list.reduce((s,e)=>s+Number(e.amount),0);
       return `<div class="company-card">
         <div class="company-head">${companyBadge(c.name,"md")}<span>${c.name}</span></div>
-        <div class="company-row"><span>Load received</span><b>${fmtMoney(sum)}</b></div>
-        <div class="company-row"><span>Entries</span><b>${list.length}</b></div>
+        <div class="company-row"><span>Load received</span>${amountChip(sum,'load')}</div>
+        <div class="company-row"><span>Entries</span>${countChip(list.length)}</div>
       </div>`;
     }).join("");
 
@@ -977,7 +994,7 @@
         <td><span class="tx-badge ${e.type}">${e.type==="load"?"LOAD":"PAID"}</span></td>
         <td><div class="co-label">${companyBadge(e.company,"sm")}<span>${e.company==='GENERAL'?'General':e.company}</span></div></td>
         <td style="color:var(--text-muted);">${e.type==='payment' ? `<span style="font-weight:600;color:var(--text);">${methodLabel(e.method)}</span>${e.refNo?` · Ref: ${escapeHtml(e.refNo)}`:''}${e.note?`<br><span style="font-size:11.5px;">${escapeHtml(e.note)}</span>`:''}` : (e.note ? escapeHtml(e.note) : "—")}</td>
-        <td class="amount ${e.type==='payment'?'':''}">${fmtMoney(e.amount)}</td>
+        <td class="amount">${amountChip(e.amount, e.type)}</td>
         <td>
           <div class="row-actions">
             <button class="icon-btn edit" title="Edit" data-id="${e.id}">
@@ -1160,7 +1177,7 @@
             <tr>
               <td><div class="co-label">${companyBadge(r.name,"sm")}<span>${r.name}</span></div></td>
               <td>${r.count}</td>
-              <td class="amount">${fmtMoney(r.sum)}</td>
+              <td class="amount">${amountChip(r.sum,'load')}</td>
               <td style="width:140px;">
                 <div style="background:var(--soft-fill-hover);border-radius:6px;height:8px;overflow:hidden;">
                   <div style="width:${companyTotal? (r.sum/companyTotal*100):0}%;background:${r.color};height:100%;"></div>
@@ -1169,7 +1186,7 @@
             </tr>`).join("")}
           <tr style="background:var(--soft-fill);font-weight:700;">
             <td>Total</td><td>${companyRows.reduce((s,r)=>s+r.count,0)}</td>
-            <td class="amount">${fmtMoney(companyTotal)}</td><td></td>
+            <td class="amount">${amountChip(companyTotal,'load')}</td><td></td>
           </tr>
         </tbody>
       </table>
@@ -1186,7 +1203,7 @@
               <td><div class="co-label">${companyBadge(e.company,"sm")}<span>${e.company==='GENERAL'?'General':e.company}</span></div></td>
               <td>${methodLabel(e.method)}${e.refNo?`<br><span style="font-size:11px;color:var(--text-muted);">Ref: ${escapeHtml(e.refNo)}</span>`:''}</td>
               <td style="color:var(--text-muted);">${e.note?escapeHtml(e.note):"—"}</td>
-              <td class="amount">${fmtMoney(e.amount)}</td>
+              <td class="amount">${amountChip(e.amount,'payment')}</td>
             </tr>`).join("") : `<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:26px;">No payments in this period.</td></tr>`}
         </tbody>
       </table>
