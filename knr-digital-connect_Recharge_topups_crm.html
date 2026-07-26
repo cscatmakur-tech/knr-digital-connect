@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>KNR Digital Connect — Ledger</title>
+<meta name="theme-color" content="#0F2044">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="KNR Digital Connect">
+<link rel="apple-touch-icon" href="https://i.ibb.co/fVGMdZpD/Gemini-Generated-Image-rrl806rrl806rrl8.png">
+<link rel="icon" href="https://i.ibb.co/fVGMdZpD/Gemini-Generated-Image-rrl806rrl806rrl8.png">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0F2044;
+    --navy-light:#1B3868;
+    --navy-deep:#081226;
+    --bg:#0A1120;
+    --card:#141C30;
+    --accent:#1FC8B8;
+    --accent-dark:#129285;
+    --amber:#F5A524;
+    --success:#1AA260;
+    --danger:#E23D3D;
+    --text:#E9EEF7;
+    --text-muted:#93A1C2;
+    --border:#26314D;
+    --tint-blue-bg:rgba(79,144,255,0.16);
+    --tint-blue-text:#8FB4FF;
+    --tint-green-bg:rgba(30,200,140,0.16);
+    --tint-green-text:#4ADE9A;
+    --tint-red-bg:rgba(226,61,61,0.18);
+    --tint-red-text:#FF8A8A;
+    --soft-fill:rgba(255,255,255,0.04);
+    --soft-fill-hover:rgba(255,255,255,0.06);
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{font-family:'Poppins',sans-serif;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+  a{color:inherit;}
+  button{font-family:'Inter',sans-serif;cursor:pointer;}
+
+  /* ---------- App shell ---------- */
+  .app{
+    display:flex;
+    min-height:100vh;
+  }
+
+  /* Signal-bar motif */
+  .signal-bars{display:inline-flex;align-items:flex-end;gap:2px;height:14px;}
+  .signal-bars span{width:3px;display:block;border-radius:1px;background:currentColor;}
+  .signal-bars span:nth-child(1){height:40%;}
+  .signal-bars span:nth-child(2){height:65%;}
+  .signal-bars span:nth-child(3){height:85%;}
+  .signal-bars span:nth-child(4){height:100%;}
+
+  /* ---------- Sidebar ---------- */
+  .sidebar{
+    width:250px;
+    flex-shrink:0;
+    background:linear-gradient(175deg,var(--navy) 0%,var(--navy-deep) 100%);
+    color:#EAF1FF;
+    display:flex;
+    flex-direction:column;
+    padding:24px 18px;
+    position:sticky;
+    top:0;
+    height:100vh;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:8px;
+    padding-bottom:20px;
+    border-bottom:1px solid rgba(255,255,255,0.12);
+  }
+  .brand img{
+    width:44px;height:44px;border-radius:10px;object-fit:cover;
+    box-shadow:0 4px 14px rgba(0,0,0,0.35);
+  }
+  .brand-name{font-family:'Poppins',sans-serif;font-weight:700;font-size:15.5px;line-height:1.2;}
+  .brand-sub{font-size:11px;color:#8FA6D6;letter-spacing:.04em;margin-top:2px;display:flex;align-items:center;gap:5px;}
+  .brand-sub .signal-bars{color:var(--accent);}
+
+  nav.nav{margin-top:22px;display:flex;flex-direction:column;gap:4px;}
+  .nav-item{
+    display:flex;align-items:center;gap:11px;
+    padding:11px 13px;border-radius:10px;
+    font-size:14px;font-weight:500;color:#C6D3EE;
+    background:transparent;border:none;text-align:left;width:100%;
+    transition:background .15s ease, color .15s ease;
+  }
+  .nav-item svg{flex-shrink:0;}
+  .nav-item:hover{background:rgba(255,255,255,0.07);color:#fff;}
+  .nav-item.active{background:var(--accent);color:#062723;font-weight:700;}
+
+  .sidebar-footer{
+    margin-top:auto;padding-top:16px;border-top:1px solid rgba(255,255,255,0.1);
+    font-size:11px;color:#7488AE;
+  }
+  .sidebar-footer button{
+    background:none;border:1px solid rgba(255,255,255,0.18);color:#9FB2D6;
+    font-size:11.5px;padding:7px 10px;border-radius:8px;width:100%;margin-top:10px;
+  }
+  .sidebar-footer button:hover{border-color:var(--danger);color:#ffb4b4;}
+
+  /* ---------- Main ---------- */
+  main{flex:1;min-width:0;padding:28px 34px 60px;}
+  .topbar{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:26px;flex-wrap:wrap;gap:14px;}
+  .page-title{font-size:22px;font-weight:700;margin:0;}
+  .page-sub{color:var(--text-muted);font-size:13.5px;margin-top:4px;}
+
+  .mobile-bar{display:none;}
+
+  /* ---------- Cards ---------- */
+  .grid{display:grid;gap:16px;}
+  .cards3{grid-template-columns:repeat(3,1fr);}
+  .card{
+    background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+    padding:18px 20px;
+  }
+  .stat-card{position:relative;overflow:hidden;transition:box-shadow .15s ease;}
+  .stat-card:hover{box-shadow:0 8px 22px rgba(16,33,61,0.08);}
+  .stat-label{font-size:12.5px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em;}
+  .stat-value{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:26px;margin-top:8px;}
+  .stat-note{font-size:12px;color:var(--text-muted);margin-top:6px;}
+  .stat-card.due .stat-value{color:var(--danger);}
+  .stat-card.load .stat-value{color:var(--navy);}
+  .stat-card.paid .stat-value{color:var(--success);}
+  .stat-icon{position:absolute;right:16px;top:16px;opacity:.14;}
+
+  .section-title{font-size:15px;font-weight:700;margin:30px 0 14px;display:flex;align-items:center;justify-content:space-between;}
+
+  /* company grid */
+  .company-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+  .company-card{
+    background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;
+    transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  }
+  .company-card:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,0.35);border-color:var(--tint-blue-text);}
+  .company-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+  .company-head span{font-weight:700;font-size:13px;}
+
+  /* company badge: monogram + category icon, used everywhere a company is shown */
+  .co-badge{
+    position:relative;flex-shrink:0;border-radius:9px;display:flex;align-items:center;justify-content:center;
+    color:#fff;font-family:'Poppins',sans-serif;font-weight:700;letter-spacing:.01em;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,0.15);
+  }
+  .co-badge.sz-md{width:34px;height:34px;font-size:12px;}
+  .co-badge.sz-sm{width:24px;height:24px;font-size:9.5px;border-radius:7px;}
+  .co-badge.has-logo{background:#fff;box-shadow:inset 0 0 0 1px var(--border), 0 1px 3px rgba(16,33,61,0.08);}
+  .co-badge.has-logo img{width:100%;height:100%;object-fit:contain;border-radius:inherit;padding:4px;}
+  .co-badge.sz-sm.has-logo img{padding:2.5px;}
+  .co-cat-icon{
+    position:absolute;bottom:-4px;right:-4px;width:15px;height:15px;border-radius:50%;
+    background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,0.25);
+  }
+  .co-badge.sz-sm .co-cat-icon{width:11px;height:11px;bottom:-3px;right:-3px;}
+  .co-cat-icon svg{width:9px;height:9px;}
+  .co-badge.sz-sm .co-cat-icon svg{width:6.5px;height:6.5px;}
+  .co-label{display:flex;align-items:center;gap:9px;}
+  .company-row{display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);margin-top:3px;}
+  .company-row b{font-family:'JetBrains Mono',monospace;color:var(--text);font-weight:600;}
+
+  /* recent list */
+  .tx-list{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+  .tx-row{display:flex;align-items:center;gap:14px;padding:13px 18px;border-bottom:1px solid var(--border);}
+  .tx-row:last-child{border-bottom:none;}
+  .tx-badge{font-size:10.5px;font-weight:700;padding:4px 9px;border-radius:20px;letter-spacing:.03em;}
+  .tx-badge.load{background:var(--tint-blue-bg);color:var(--tint-blue-text);}
+  .tx-badge.payment{background:var(--tint-green-bg);color:var(--tint-green-text);}
+  .tx-main{flex:1;min-width:0;}
+  .tx-company{font-weight:600;font-size:13.5px;}
+  .tx-note{font-size:12px;color:var(--text-muted);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .tx-date{font-size:12px;color:var(--text-muted);width:88px;flex-shrink:0;}
+  .tx-amount{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;width:110px;text-align:right;flex-shrink:0;}
+  .tx-amount.load{color:var(--navy);}
+  .tx-amount.payment{color:var(--success);}
+  .empty-state{padding:40px 20px;text-align:center;color:var(--text-muted);font-size:13.5px;}
+  .empty-state .signal-bars{color:var(--border);height:26px;margin-bottom:10px;}
+  .empty-state .signal-bars span{width:6px;}
+
+  /* ---------- Forms ---------- */
+  .form-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:26px;max-width:620px;}
+  .type-toggle{display:flex;gap:10px;margin-bottom:22px;}
+  .type-btn{
+    flex:1;padding:14px;border-radius:12px;border:1.5px solid var(--border);background:var(--soft-fill);
+    font-weight:700;font-size:14px;color:var(--text-muted);display:flex;align-items:center;justify-content:center;gap:8px;
+    transition:all .15s ease;
+  }
+  .type-btn.active.load{border-color:var(--tint-blue-text);background:var(--tint-blue-bg);color:var(--tint-blue-text);}
+  .type-btn.active.payment{border-color:var(--tint-green-text);background:var(--tint-green-bg);color:var(--tint-green-text);}
+
+  .field{margin-bottom:16px;}
+  .field label{display:block;font-size:12.5px;font-weight:600;color:var(--text-muted);margin-bottom:6px;}
+  .field input, .field select, .field textarea{
+    width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:9px;
+    font-size:14px;font-family:'Inter',sans-serif;background:var(--soft-fill);color:var(--text);
+  }
+  .field input.mono{font-family:'JetBrains Mono',monospace;}
+  .field input:focus, .field select:focus, .field textarea:focus{outline:none;border-color:var(--accent);}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .save-btn{
+    width:100%;padding:13px;border:none;border-radius:10px;background:var(--navy);color:#fff;
+    font-weight:700;font-size:14.5px;margin-top:6px;
+  }
+  .save-btn:hover{background:var(--navy-light);}
+  .save-btn.payment-mode{background:var(--success);}
+  .save-btn.payment-mode:hover{background:var(--accent-dark);}
+  .toast{
+    position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);
+    background:var(--navy-deep);color:#fff;padding:12px 22px;border-radius:30px;font-size:13.5px;font-weight:600;
+    opacity:0;pointer-events:none;transition:all .25s ease;z-index:50;display:flex;align-items:center;gap:8px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.25);
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  .toast .dot{width:8px;height:8px;background:var(--accent);}
+
+  /* ---------- Ledger ---------- */
+  .filter-bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;align-items:flex-end;}
+  .filter-bar .field{margin-bottom:0;min-width:140px;}
+  .filter-bar .field.grow{flex:1;min-width:160px;}
+  .chip-btn{padding:10px 16px;border-radius:9px;border:1.5px solid var(--border);background:var(--soft-fill);font-size:13px;font-weight:600;color:var(--text-muted);height:44px;}
+  .chip-btn:hover{border-color:var(--navy);color:var(--navy);}
+
+  table{width:100%;border-collapse:collapse;background:var(--card);border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);}
+  thead th{
+    text-align:left;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-muted);
+    padding:12px 16px;border-bottom:1px solid var(--border);background:var(--soft-fill);font-weight:700;
+  }
+  tbody td{padding:13px 16px;border-bottom:1px solid var(--border);font-size:13.5px;vertical-align:middle;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:var(--soft-fill);}
+  td.amount{font-family:'JetBrains Mono',monospace;font-weight:700;text-align:right;}
+  .row-actions{display:flex;gap:8px;justify-content:flex-end;}
+  .icon-btn{background:none;border:none;padding:5px;border-radius:6px;color:var(--text-muted);}
+  .icon-btn:hover{background:var(--border);color:var(--text);}
+  .icon-btn.del:hover{color:var(--tint-red-text);background:var(--tint-red-bg);}
+
+  /* ---------- Reports ---------- */
+  .range-bar{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:22px;}
+  .quick-range{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;}
+  .quick-range button{padding:8px 13px;border-radius:20px;border:1.5px solid var(--border);background:var(--soft-fill);font-size:12.5px;font-weight:600;color:var(--text-muted);}
+  .quick-range button.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+  .due-banner{
+    background:linear-gradient(120deg,var(--navy) 0%,var(--navy-light) 100%);color:#fff;border-radius:var(--radius);
+    padding:22px 26px;display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:14px;
+  }
+  .due-banner .label{font-size:12.5px;color:#AFC2EA;font-weight:600;text-transform:uppercase;letter-spacing:.04em;}
+  .due-banner .value{font-family:'JetBrains Mono',monospace;font-size:30px;font-weight:700;margin-top:6px;}
+  .due-banner .value.settled{color:var(--accent);}
+  .due-banner .value.owe{color:#FFB4A8;}
+
+  /* Modal */
+  .modal-overlay{
+    position:fixed;inset:0;background:rgba(8,18,38,0.55);display:none;align-items:center;justify-content:center;z-index:100;padding:20px;
+  }
+  .modal-overlay.show{display:flex;}
+  .modal{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:26px;width:100%;max-width:460px;max-height:90vh;overflow:auto;}
+  .modal h3{margin:0 0 18px;font-size:16px;}
+  .modal-actions{display:flex;gap:10px;margin-top:6px;}
+  .modal-actions button{flex:1;padding:11px;border-radius:9px;border:none;font-weight:700;font-size:13.5px;}
+  .modal-actions .cancel{background:var(--soft-fill-hover);color:var(--text-muted);}
+  .modal-actions .confirm{background:var(--navy);color:#fff;}
+  .modal-actions .danger{background:var(--danger);color:#fff;}
+
+  .loading{padding:60px;text-align:center;color:var(--text-muted);font-size:13.5px;}
+
+  /* ---------- Lock screen ---------- */
+  .lock-overlay{
+    position:fixed;inset:0;z-index:200;
+    background:linear-gradient(175deg,var(--navy) 0%,var(--navy-deep) 100%);
+    display:flex;align-items:center;justify-content:center;padding:20px;
+  }
+  .lock-overlay.hidden{display:none;}
+  .lock-card{
+    background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);border-radius:18px;
+    padding:34px 30px;width:100%;max-width:340px;text-align:center;
+    backdrop-filter:blur(6px);
+  }
+  .lock-card img{width:56px;height:56px;border-radius:14px;margin-bottom:14px;box-shadow:0 6px 18px rgba(0,0,0,0.35);}
+  .lock-card h2{color:#fff;font-size:18px;margin:0 0 4px;}
+  .lock-card p{color:#9FB2D6;font-size:12.5px;margin:0 0 22px;}
+  .lock-card input{
+    width:100%;padding:13px 14px;border-radius:10px;border:1.5px solid rgba(255,255,255,0.18);
+    background:rgba(255,255,255,0.08);color:#fff;font-size:16px;text-align:center;letter-spacing:.08em;
+    font-family:'JetBrains Mono',monospace;
+  }
+  .lock-card input::placeholder{color:#6C81AA;letter-spacing:normal;font-family:'Inter',sans-serif;}
+  .lock-card input:focus{outline:none;border-color:var(--accent);}
+  .lock-card button{
+    width:100%;margin-top:12px;padding:13px;border:none;border-radius:10px;background:var(--accent);
+    color:#062723;font-weight:700;font-size:14px;
+  }
+  .lock-card button:hover{background:#28DFCC;}
+  .lock-error{color:#FFB4A8;font-size:12.5px;margin-top:10px;min-height:16px;}
+
+  /* ---------- Install (add to home screen) ---------- */
+  .install-note{font-size:12px;color:var(--text-muted);line-height:1.6;text-align:left;}
+  .install-note b{display:block;color:var(--text);font-size:13px;margin:14px 0 4px;}
+  .install-note b:first-child{margin-top:0;}
+
+  .setup-banner{
+    background:rgba(245,165,36,0.12);border:1.5px solid rgba(245,165,36,0.4);border-radius:12px;
+    padding:14px 18px;margin-bottom:20px;font-size:13px;color:#F0C27B;
+    display:flex;gap:12px;align-items:flex-start;line-height:1.5;
+  }
+  .setup-banner b{display:block;font-size:13.5px;margin-bottom:2px;color:var(--amber);}
+  .setup-banner svg{flex-shrink:0;margin-top:1px;color:var(--amber);}
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:900px){
+    .cards3{grid-template-columns:1fr;}
+    .company-grid{grid-template-columns:repeat(2,1fr);}
+    .sidebar{
+      position:fixed;left:0;right:0;bottom:0;top:auto;width:100%;height:auto;
+      flex-direction:row;padding:8px 6px;z-index:40;overflow-x:auto;
+      border-top:1px solid rgba(255,255,255,0.1);
+    }
+    .brand,.sidebar-footer{display:none;}
+    nav.nav{flex-direction:row;margin-top:0;flex:1;justify-content:space-around;}
+    .nav-item{flex-direction:column;font-size:10.5px;gap:4px;padding:8px 6px;text-align:center;}
+    .nav-item span{white-space:nowrap;}
+    main{padding:20px 16px 90px;}
+    .mobile-bar{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+    .mobile-bar img{width:36px;height:36px;border-radius:9px;}
+    .mobile-bar .brand-name{font-family:'Poppins',sans-serif;font-weight:700;font-size:15px;color:var(--navy);}
+    .field-row{grid-template-columns:1fr;}
+  }
+  @media (max-width:560px){
+    .company-grid{grid-template-columns:1fr;}
+    .tx-note{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="lock-overlay" id="lockOverlay">
+  <div class="lock-card">
+    <img src="https://i.ibb.co/fVGMdZpD/Gemini-Generated-Image-rrl806rrl806rrl8.png" alt="KNR Digital Connect">
+    <h2>KNR Digital Connect</h2>
+    <p>Enter your password to open the ledger</p>
+    <input type="password" id="lockInput" placeholder="Password" autocomplete="off" inputmode="text">
+    <button id="lockSubmit">Unlock</button>
+    <div class="lock-error" id="lockError"></div>
+  </div>
+</div>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="https://i.ibb.co/fVGMdZpD/Gemini-Generated-Image-rrl806rrl806rrl8.png" alt="KNR Digital Connect logo">
+      <div>
+        <div class="brand-name">KNR Digital<br>Connect</div>
+        <div class="brand-sub"><span class="signal-bars"><span></span><span></span><span></span><span></span></span> Load Ledger</div>
+      </div>
+    </div>
+    <nav class="nav" id="navMenu">
+      <button class="nav-item" data-tab="dashboard">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+        <span>Dashboard</span>
+      </button>
+      <button class="nav-item" data-tab="entry">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+        <span>New Entry</span>
+      </button>
+      <button class="nav-item" data-tab="ledger">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+        <span>Ledger</span>
+      </button>
+      <button class="nav-item" data-tab="reports">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M12 20V4M20 20v-7"/></svg>
+        <span>Reports</span>
+      </button>
+    </nav>
+    <div class="sidebar-footer">
+      Data is saved to your Google Drive and stays in sync across your devices.
+      <button id="installBtn">📲 Add to Home Screen</button>
+      <button id="lockNowBtn">🔒 Lock now</button>
+      <button id="resetBtn">Reset all data</button>
+    </div>
+  </aside>
+
+  <main>
+    <div class="mobile-bar">
+      <img src="https://i.ibb.co/fVGMdZpD/Gemini-Generated-Image-rrl806rrl806rrl8.png" alt="logo">
+      <div class="brand-name">KNR Digital Connect</div>
+    </div>
+
+    <div id="setupBanner" class="setup-banner" style="display:none;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.29 3.86l-8.18 14.18A2 2 0 0 0 3.82 21h16.36a2 2 0 0 0 1.71-2.96L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+      <div>
+        <b>Google Drive storage not connected yet</b>
+        Deploy the included KNR-AppsScript-Backend.gs to a Google Sheet in your Drive, then paste the Web app URL into GAS_URL near the top of this file's script. Until then, entries won't be saved.
+      </div>
+    </div>
+    <div id="viewRoot" class="loading">Loading your ledger…</div>
+  </main>
+</div>
+
+<div class="toast" id="toast"><span class="dot"></span><span id="toastMsg"></span></div>
+
+<div class="modal-overlay" id="installModalOverlay">
+  <div class="modal">
+    <h3>Add to Home Screen</h3>
+    <div class="install-note">
+      <b>📱 Android (Chrome)</b>
+      Tap the ⋮ menu (top-right) → "Add to Home screen" or "Install app" → Add. An app icon will appear on your home screen.
+      <b>🍏 iPhone (Safari)</b>
+      Tap the Share icon (square with an arrow) → scroll down → "Add to Home Screen" → Add.
+      <b>💻 PC (Chrome/Edge)</b>
+      Click the ⊕ install icon in the address bar (if shown), or the ⋮ menu → "Install page as app".
+    </div>
+    <div class="modal-actions">
+      <button class="cancel" id="installClose">Got it</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="editModalOverlay">
+  <div class="modal">
+    <h3>Edit entry</h3>
+    <div class="field">
+      <label>Date</label>
+      <input type="date" id="editDate">
+    </div>
+    <div class="field">
+      <label>Company</label>
+      <select id="editCompany"></select>
+    </div>
+    <div class="field">
+      <label>Amount (₹)</label>
+      <input type="number" class="mono" id="editAmount" min="0" step="1">
+    </div>
+    <div class="field" id="editMethodWrap" style="display:none;">
+      <label>Payment Method</label>
+      <select id="editMethod">
+        <option value="CASH">Cash</option>
+        <option value="UPI">UPI</option>
+        <option value="NETBANKING">Net Banking</option>
+      </select>
+    </div>
+    <div class="field" id="editRefWrap" style="display:none;">
+      <label>Reference / Transaction No. (optional)</label>
+      <input type="text" id="editRefNo" placeholder="e.g. UPI ref or UTR number">
+    </div>
+    <div class="field">
+      <label>Note (optional)</label>
+      <input type="text" id="editNote">
+    </div>
+    <div class="modal-actions">
+      <button class="cancel" id="editCancel">Cancel</button>
+      <button class="confirm" id="editSave">Save changes</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="deleteModalOverlay">
+  <div class="modal">
+    <h3>Delete this entry?</h3>
+    <p style="color:var(--text-muted);font-size:13.5px;margin-top:-8px;">This can't be undone.</p>
+    <div class="modal-actions">
+      <button class="cancel" id="deleteCancel">Cancel</button>
+      <button class="danger" id="deleteConfirm">Delete</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="resetModalOverlay">
+  <div class="modal">
+    <h3>Reset all data?</h3>
+    <p style="color:var(--text-muted);font-size:13.5px;margin-top:-8px;">Every load and payment entry will be permanently removed. This can't be undone.</p>
+    <div class="modal-actions">
+      <button class="cancel" id="resetCancel">Cancel</button>
+      <button class="danger" id="resetConfirm">Reset everything</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  const COMPANIES = [
+    {name:"JIO", color:"#0A2885", initials:"J",  cat:"mobile", logo:"https://i.ibb.co/rGZrjG9x/jio-logo-icon.webp"},
+    {name:"AIRTEL", color:"#ED1C24", initials:"A", cat:"mobile", logo:"https://i.ibb.co/qY1XkT7Y/airtel-logo.jpg"},
+    {name:"VI (VODA IDEA)", color:"#D6006B", initials:"VI", cat:"mobile", logo:"https://i.ibb.co/Df0nY0v0/vodafone-idea-logo.png"},
+    {name:"BSNL", color:"#00539B", initials:"BS", cat:"mobile"},
+    {name:"SUNDIRECT", color:"#F7941D", initials:"SD", cat:"dth", logo:"https://i.ibb.co/9krm6x8r/SUNDIRECT-LOGO.png"},
+    {name:"TATA PLAY", color:"#E31E24", initials:"TP", cat:"dth", logo:"https://i.ibb.co/1GJfB0XY/tata-play.jpg"},
+    {name:"AIRTEL DTH", color:"#9E1016", initials:"AD", cat:"dth", logo:"https://i.ibb.co/tTp3nSXb/og-airtel-digital-tv.png"},
+    {name:"AP FIBER", color:"#0B8043", initials:"AF", cat:"fiber", logo:"https://i.ibb.co/hJ5BKSYN/AP-FIBER.png"},
+  ];
+
+  // small category icons shown as a corner badge on each company monogram
+  const CAT_ICONS = {
+    mobile: '<svg viewBox="0 0 24 24" fill="none" stroke="#0F2044" stroke-width="3" stroke-linecap="round"><path d="M4 20 L4 15 M9 20 L9 12 M14 20 L14 8 M19 20 L19 4"/></svg>',
+    dth: '<svg viewBox="0 0 24 24" fill="none" stroke="#0F2044" stroke-width="2.4" stroke-linecap="round"><path d="M4 15a9 9 0 0 1 9-9"/><path d="M4 15l6 6"/><circle cx="4" cy="15" r="1.6" fill="#0F2044" stroke="none"/><path d="M13 6v-3M20 13h3"/></svg>',
+    fiber: '<svg viewBox="0 0 24 24" fill="none" stroke="#0F2044" stroke-width="2.4" stroke-linecap="round"><path d="M2 12c2-3 4-3 6 0s4 3 6 0 4-3 6 0 2 3 2 3"/></svg>'
+  };
+
+  function companyBadge(name, size){
+    size = size || "md";
+    if(name==="GENERAL"){
+      return `<span class="co-badge sz-${size}" style="background:#94A3B8;">GN</span>`;
+    }
+    const c = COMPANIES.find(x=>x.name===name);
+    if(!c) return `<span class="co-badge sz-${size}" style="background:#94A3B8;">?</span>`;
+    if(c.logo){
+      // real brand logo, with initials as a silent fallback if the image ever fails to load
+      return `<span class="co-badge sz-${size} has-logo">
+        <img src="${c.logo}" alt="${c.name} logo" loading="lazy"
+             onerror="this.parentElement.classList.remove('has-logo');this.parentElement.style.background='${c.color}';this.remove();">
+        <span class="co-cat-icon">${CAT_ICONS[c.cat]}</span>
+      </span>`;
+    }
+    return `<span class="co-badge sz-${size}" style="background:${c.color};">${c.initials}<span class="co-cat-icon">${CAT_ICONS[c.cat]}</span></span>`;
+  }
+  // ============================================================
+  // GOOGLE DRIVE STORAGE — data is saved into a Google Sheet in your
+  // own Drive via a small Apps Script "backend". Deploy
+  // KNR-AppsScript-Backend.gs (see the setup notes inside that file)
+  // and paste the Web app URL it gives you below.
+  // Example: "https://script.google.com/macros/s/AKfycb.../exec"
+  // Once set, the page works the same on your phone and your PC as
+  // long as you open it while signed in — the Sheet itself is the
+  // single shared source of truth, so both devices always see the
+  // same data.
+  // ============================================================
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbzvAl2iaUQsc1i_5T8_cK_Wd1J33EECCwGPK8T3SvtGCcrQPQ82guFMTPFEP6cr4ZwA3Q/exec";
+
+  // ============================================================
+  // APP PASSWORD — a simple lock screen so casual/family members
+  // can't open the ledger without a password. Change "1234" below
+  // to whatever you want. NOTE: this is a basic deterrent, not
+  // bank-grade security — it's a plain check inside the page code,
+  // since there's no server involved. Good enough to stop someone
+  // from casually opening the file, not a secure login system.
+  // ============================================================
+  const APP_PASSWORD = "1234";
+  const LOCK_KEY = "knr_unlocked";
+
+  const lockOverlay = document.getElementById("lockOverlay");
+  const lockInput = document.getElementById("lockInput");
+  const lockError = document.getElementById("lockError");
+
+  function tryUnlock(){
+    if(lockInput.value === APP_PASSWORD){
+      localStorage.setItem(LOCK_KEY, "1");
+      lockOverlay.classList.add("hidden");
+      lockError.textContent = "";
+    } else {
+      lockError.textContent = "Incorrect password, try again.";
+      lockInput.value = "";
+      lockInput.focus();
+    }
+  }
+  document.getElementById("lockSubmit").onclick = tryUnlock;
+  lockInput.addEventListener("keydown", e=>{ if(e.key==="Enter") tryUnlock(); });
+
+  if(localStorage.getItem(LOCK_KEY) === "1"){
+    lockOverlay.classList.add("hidden");
+  } else {
+    setTimeout(()=>lockInput.focus(), 200);
+  }
+
+  document.getElementById("lockNowBtn").onclick = ()=>{
+    localStorage.removeItem(LOCK_KEY);
+    location.reload();
+  };
+
+  // ---------- Register service worker (enables real "Install App" prompt
+  // once this page is hosted online over https, e.g. GitHub Pages) ----------
+  if("serviceWorker" in navigator && (location.protocol==="https:" || location.hostname==="localhost")){
+    navigator.serviceWorker.register("service-worker.js").catch(()=>{});
+  }
+
+  // ---------- Add to Home Screen ----------
+  let deferredInstallPrompt = null;
+  window.addEventListener("beforeinstallprompt", (e)=>{
+    e.preventDefault();
+    deferredInstallPrompt = e;
+  });
+  const installOverlay = document.getElementById("installModalOverlay");
+  document.getElementById("installBtn").onclick = async ()=>{
+    if(deferredInstallPrompt){
+      deferredInstallPrompt.prompt();
+      await deferredInstallPrompt.userChoice;
+      deferredInstallPrompt = null;
+    } else {
+      installOverlay.classList.add("show");
+    }
+  };
+  document.getElementById("installClose").onclick = ()=> installOverlay.classList.remove("show");
+
+  let entries = [];
+  let activeTab = "dashboard";
+  let entryType = "load";
+  let ledgerFilters = {type:"all", company:"all", from:"", to:""};
+  let reportRange = {from:"", to:"", preset:"month"};
+  let editingId = null;
+  let deletingId = null;
+
+  const root = document.getElementById("viewRoot");
+  const toast = document.getElementById("toast");
+  const toastMsg = document.getElementById("toastMsg");
+
+  function showToast(msg){
+    toastMsg.textContent = msg;
+    toast.classList.add("show");
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(()=>toast.classList.remove("show"), 2400);
+  }
+
+  function fmtMoney(n){
+    n = Number(n)||0;
+    return "₹" + n.toLocaleString("en-IN", {maximumFractionDigits:0});
+  }
+  function fmtDate(d){
+    const dt = new Date(d+"T00:00:00");
+    if(isNaN(dt)) return d;
+    return dt.toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"});
+  }
+  function todayStr(){
+    const d = new Date();
+    return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+  }
+  function companyColor(name){
+    const c = COMPANIES.find(c=>c.name===name);
+    return c ? c.color : "#94A3B8";
+  }
+  function uid(){ return "e_"+Date.now()+"_"+Math.random().toString(36).slice(2,8); }
+  function methodLabel(m){
+    return {CASH:"Cash", UPI:"UPI", NETBANKING:"Net Banking"}[m] || "Cash";
+  }
+
+  // ---------- storage (Google Sheets via Apps Script — free, in your Drive) ----------
+  let notConfigured = GAS_URL.indexOf("PASTE_YOUR_WEB_APP_URL_HERE") !== -1;
+
+  async function loadEntries(){
+    if(notConfigured){ entries = []; return; }
+    try{
+      const res = await fetch(GAS_URL + "?action=list");
+      const data = await res.json();
+      entries = (data.entries||[]).map(e=>({...e, amount:Number(e.amount)}));
+    }catch(e){
+      entries = [];
+      showToast("Could not reach Google Sheet — check your internet");
+    }
+  }
+
+  async function callApi(action, payload){
+    if(notConfigured){ showToast("Storage not connected yet — see setup note"); return; }
+    try{
+      const res = await fetch(GAS_URL, {
+        method:"POST",
+        headers:{"Content-Type":"text/plain;charset=utf-8"},
+        body: JSON.stringify({action, ...payload})
+      });
+      const data = await res.json();
+      entries = (data.entries||[]).map(e=>({...e, amount:Number(e.amount)}));
+    }catch(e){
+      showToast("Save failed — check connection");
+    }
+  }
+
+  // ---------- derived data ----------
+  function totals(list){
+    let load=0, payment=0;
+    list.forEach(e=>{ if(e.type==="load") load+=Number(e.amount); else payment+=Number(e.amount); });
+    return {load, payment, due: load-payment};
+  }
+  function inRange(e, from, to){
+    if(from && e.date < from) return false;
+    if(to && e.date > to) return false;
+    return true;
+  }
+
+  // ---------- render router ----------
+  function setActiveTab(tab){
+    activeTab = tab;
+    document.querySelectorAll(".nav-item").forEach(b=>b.classList.toggle("active", b.dataset.tab===tab));
+    render();
+  }
+  document.getElementById("navMenu").addEventListener("click", (e)=>{
+    const btn = e.target.closest(".nav-item");
+    if(btn) setActiveTab(btn.dataset.tab);
+  });
+
+  function render(){
+    if(activeTab==="dashboard") renderDashboard();
+    else if(activeTab==="entry") renderEntry();
+    else if(activeTab==="ledger") renderLedger();
+    else if(activeTab==="reports") renderReports();
+  }
+
+  // ---------- DASHBOARD ----------
+  function renderDashboard(){
+    const t = totals(entries);
+    const sorted = [...entries].sort((a,b)=> b.date.localeCompare(a.date) || b.ts-a.ts);
+    const recent = sorted.slice(0,8);
+
+    let companyCards = COMPANIES.map(c=>{
+      const list = entries.filter(e=>e.type==="load" && e.company===c.name);
+      const sum = list.reduce((s,e)=>s+Number(e.amount),0);
+      return `<div class="company-card">
+        <div class="company-head">${companyBadge(c.name,"md")}<span>${c.name}</span></div>
+        <div class="company-row"><span>Load received</span><b>${fmtMoney(sum)}</b></div>
+        <div class="company-row"><span>Entries</span><b>${list.length}</b></div>
+      </div>`;
+    }).join("");
+
+    let txRows = recent.length ? recent.map(e=>`
+      <div class="tx-row">
+        <span class="tx-badge ${e.type}">${e.type==="load"?"LOAD":"PAID"}</span>
+        <div class="tx-main">
+          <div class="tx-company">${e.company}</div>
+          ${e.type==='payment' ? `<div class="tx-note">${methodLabel(e.method)}${e.refNo?` · Ref: ${escapeHtml(e.refNo)}`:''}${e.note?` — ${escapeHtml(e.note)}`:''}</div>` : (e.note ? `<div class="tx-note">${escapeHtml(e.note)}</div>` : "")}
+        </div>
+        <div class="tx-date">${fmtDate(e.date)}</div>
+        <div class="tx-amount ${e.type}">${fmtMoney(e.amount)}</div>
+      </div>`).join("") :
+      `<div class="empty-state"><div class="signal-bars"><span></span><span></span><span></span><span></span></div>No entries yet. Add your first load or payment from "New Entry".</div>`;
+
+    root.innerHTML = `
+      <div class="topbar">
+        <div>
+          <h1 class="page-title">Dashboard</h1>
+          <div class="page-sub">Overview of load received and payments across all companies</div>
+        </div>
+      </div>
+
+      <div class="grid cards3">
+        <div class="card stat-card load">
+          <div class="stat-label">Total Load Received</div>
+          <div class="stat-value">${fmtMoney(t.load)}</div>
+          <div class="stat-note">All-time, across ${COMPANIES.length} companies</div>
+        </div>
+        <div class="card stat-card paid">
+          <div class="stat-label">Total Paid to Distributor</div>
+          <div class="stat-value">${fmtMoney(t.payment)}</div>
+          <div class="stat-note">All-time payments sent</div>
+        </div>
+        <div class="card stat-card due">
+          <div class="stat-label">Balance Due</div>
+          <div class="stat-value" style="${t.due<=0?'color:var(--success)':''}">${t.due<=0 ? fmtMoney(0) : fmtMoney(t.due)}</div>
+          <div class="stat-note">${t.due<=0 ? "You're fully settled" : "Owed to distributor"}</div>
+        </div>
+      </div>
+
+      <div class="section-title">Company-wise Load</div>
+      <div class="company-grid">${companyCards}</div>
+
+      <div class="section-title">Recent Activity</div>
+      <div class="tx-list">${txRows}</div>
+    `;
+  }
+
+  // ---------- NEW ENTRY ----------
+  function companyOptions(includeGeneral){
+    let opts = includeGeneral ? `<option value="GENERAL">General (all companies / distributor)</option>` : "";
+    opts += COMPANIES.map(c=>`<option value="${c.name}">${c.name}</option>`).join("");
+    return opts;
+  }
+
+  function renderEntry(){
+    root.innerHTML = `
+      <div class="topbar">
+        <div>
+          <h1 class="page-title">New Entry</h1>
+          <div class="page-sub">Record a load received from your distributor, or a payment you sent</div>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div class="type-toggle">
+          <button type="button" class="type-btn load ${entryType==='load'?'active load':''}" id="btnTypeLoad">Load Received</button>
+          <button type="button" class="type-btn payment ${entryType==='payment'?'active payment':''}" id="btnTypePayment">Payment Sent</button>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label>Date</label>
+            <input type="date" id="fDate" value="${todayStr()}">
+          </div>
+          <div class="field">
+            <label>Company</label>
+            <div style="display:flex;align-items:center;gap:10px;">
+              <select id="fCompany" style="flex:1;">${companyOptions(entryType==='payment')}</select>
+              <div id="fCompanyPreview"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Amount (₹)</label>
+          <input type="number" class="mono" id="fAmount" min="0" step="1" placeholder="e.g. 5000">
+        </div>
+
+        ${entryType==='payment' ? `
+        <div class="field-row">
+          <div class="field">
+            <label>Payment Method</label>
+            <select id="fMethod">
+              <option value="CASH">Cash</option>
+              <option value="UPI">UPI</option>
+              <option value="NETBANKING">Net Banking</option>
+            </select>
+          </div>
+          <div class="field" id="fRefWrap" style="display:none;">
+            <label>Reference / Transaction No. (optional)</label>
+            <input type="text" id="fRefNo" placeholder="e.g. UPI ref or UTR number">
+          </div>
+        </div>
+        ` : ``}
+
+        <div class="field">
+          <label>Note (optional)</label>
+          <input type="text" id="fNote" placeholder="e.g. UPI ref, or remarks">
+        </div>
+
+        <button class="save-btn ${entryType==='payment'?'payment-mode':''}" id="fSave">
+          Save ${entryType==='load' ? 'Load Entry' : 'Payment'}
+        </button>
+      </div>
+    `;
+
+    document.getElementById("btnTypeLoad").onclick = ()=>{ entryType="load"; renderEntry(); };
+    document.getElementById("btnTypePayment").onclick = ()=>{ entryType="payment"; renderEntry(); };
+
+    const fCompany = document.getElementById("fCompany");
+    const fPreview = document.getElementById("fCompanyPreview");
+    function updatePreview(){ fPreview.innerHTML = companyBadge(fCompany.value, "md"); }
+    fCompany.onchange = updatePreview;
+    updatePreview();
+
+    const fMethod = document.getElementById("fMethod");
+    const fRefWrap = document.getElementById("fRefWrap");
+    if(fMethod){
+      fMethod.onchange = ()=>{ fRefWrap.style.display = fMethod.value==="CASH" ? "none" : "block"; };
+    }
+
+    document.getElementById("fSave").onclick = async ()=>{
+      const date = document.getElementById("fDate").value;
+      const company = document.getElementById("fCompany").value;
+      const amount = parseFloat(document.getElementById("fAmount").value);
+      const note = document.getElementById("fNote").value.trim();
+      const method = entryType==="payment" ? document.getElementById("fMethod").value : "";
+      const refNo = (entryType==="payment" && method!=="CASH") ? document.getElementById("fRefNo").value.trim() : "";
+
+      if(!date){ showToast("Please pick a date"); return; }
+      if(!amount || amount<=0){ showToast("Please enter a valid amount"); return; }
+
+      const btn = document.getElementById("fSave");
+      btn.textContent = "Saving…";
+      btn.disabled = true;
+      await callApi("add", {entry:{id:uid(), type:entryType, date, company, amount, note, method, refNo, ts:Date.now()}});
+      showToast(entryType==="load" ? "Load entry saved" : "Payment recorded");
+      document.getElementById("fAmount").value = "";
+      document.getElementById("fNote").value = "";
+      if(document.getElementById("fRefNo")) document.getElementById("fRefNo").value = "";
+      if(fMethod){ fMethod.value = "CASH"; fRefWrap.style.display = "none"; }
+      btn.textContent = `Save ${entryType==='load' ? 'Load Entry' : 'Payment'}`;
+      btn.disabled = false;
+    };
+  }
+
+  // ---------- LEDGER ----------
+  function renderLedger(){
+    let list = entries.filter(e=>{
+      if(ledgerFilters.type!=="all" && e.type!==ledgerFilters.type) return false;
+      if(ledgerFilters.company!=="all" && e.company!==ledgerFilters.company) return false;
+      if(!inRange(e, ledgerFilters.from, ledgerFilters.to)) return false;
+      return true;
+    }).sort((a,b)=> b.date.localeCompare(a.date) || b.ts-a.ts);
+
+    root.innerHTML = `
+      <div class="topbar">
+        <div>
+          <h1 class="page-title">Ledger</h1>
+          <div class="page-sub">${list.length} entr${list.length===1?'y':'ies'} · edit or remove any record</div>
+        </div>
+      </div>
+
+      <div class="filter-bar">
+        <div class="field">
+          <label>Type</label>
+          <select id="lfType">
+            <option value="all">All types</option>
+            <option value="load">Load received</option>
+            <option value="payment">Payment sent</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Company</label>
+          <select id="lfCompany">
+            <option value="all">All companies</option>
+            ${COMPANIES.map(c=>`<option value="${c.name}">${c.name}</option>`).join("")}
+            <option value="GENERAL">General</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>From</label>
+          <input type="date" id="lfFrom">
+        </div>
+        <div class="field">
+          <label>To</label>
+          <input type="date" id="lfTo">
+        </div>
+        <button class="chip-btn" id="lfClear">Clear filters</button>
+      </div>
+
+      <div style="overflow-x:auto;">
+      <table>
+        <thead><tr>
+          <th>Date</th><th>Type</th><th>Company</th><th>Note</th><th style="text-align:right;">Amount</th><th></th>
+        </tr></thead>
+        <tbody id="ledgerBody">
+          ${list.length ? list.map(rowHtml).join("") : `<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:34px;">No matching entries.</td></tr>`}
+        </tbody>
+      </table>
+      </div>
+    `;
+
+    function rowHtml(e){
+      return `<tr data-id="${e.id}">
+        <td>${fmtDate(e.date)}</td>
+        <td><span class="tx-badge ${e.type}">${e.type==="load"?"LOAD":"PAID"}</span></td>
+        <td><div class="co-label">${companyBadge(e.company,"sm")}<span>${e.company==='GENERAL'?'General':e.company}</span></div></td>
+        <td style="color:var(--text-muted);">${e.type==='payment' ? `<span style="font-weight:600;color:var(--text);">${methodLabel(e.method)}</span>${e.refNo?` · Ref: ${escapeHtml(e.refNo)}`:''}${e.note?`<br><span style="font-size:11.5px;">${escapeHtml(e.note)}</span>`:''}` : (e.note ? escapeHtml(e.note) : "—")}</td>
+        <td class="amount ${e.type==='payment'?'':''}">${fmtMoney(e.amount)}</td>
+        <td>
+          <div class="row-actions">
+            <button class="icon-btn edit" title="Edit" data-id="${e.id}">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            </button>
+            <button class="icon-btn del" title="Delete" data-id="${e.id}">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4h8v2m-9 0 1 14h8l1-14"/></svg>
+            </button>
+          </div>
+        </td>
+      </tr>`;
+    }
+
+    document.getElementById("lfType").value = ledgerFilters.type;
+    document.getElementById("lfCompany").value = ledgerFilters.company;
+    document.getElementById("lfFrom").value = ledgerFilters.from;
+    document.getElementById("lfTo").value = ledgerFilters.to;
+
+    document.getElementById("lfType").onchange = e=>{ ledgerFilters.type=e.target.value; renderLedger(); };
+    document.getElementById("lfCompany").onchange = e=>{ ledgerFilters.company=e.target.value; renderLedger(); };
+    document.getElementById("lfFrom").onchange = e=>{ ledgerFilters.from=e.target.value; renderLedger(); };
+    document.getElementById("lfTo").onchange = e=>{ ledgerFilters.to=e.target.value; renderLedger(); };
+    document.getElementById("lfClear").onclick = ()=>{ ledgerFilters={type:"all",company:"all",from:"",to:""}; renderLedger(); };
+
+    document.querySelectorAll(".icon-btn.edit").forEach(b=> b.onclick=()=>openEdit(b.dataset.id));
+    document.querySelectorAll(".icon-btn.del").forEach(b=> b.onclick=()=>openDelete(b.dataset.id));
+  }
+
+  // ---------- edit modal ----------
+  const editOverlay = document.getElementById("editModalOverlay");
+  function openEdit(id){
+    const e = entries.find(x=>x.id===id);
+    if(!e) return;
+    editingId = id;
+    document.getElementById("editDate").value = e.date;
+    const sel = document.getElementById("editCompany");
+    sel.innerHTML = companyOptions(true);
+    sel.value = e.company;
+    document.getElementById("editAmount").value = e.amount;
+    document.getElementById("editNote").value = e.note || "";
+
+    const isPayment = e.type === "payment";
+    const methodWrap = document.getElementById("editMethodWrap");
+    const refWrap = document.getElementById("editRefWrap");
+    const methodSel = document.getElementById("editMethod");
+    methodWrap.style.display = isPayment ? "block" : "none";
+    methodSel.value = e.method || "CASH";
+    document.getElementById("editRefNo").value = e.refNo || "";
+    function updateRefVisibility(){
+      refWrap.style.display = (isPayment && methodSel.value!=="CASH") ? "block" : "none";
+    }
+    methodSel.onchange = updateRefVisibility;
+    updateRefVisibility();
+
+    editOverlay.classList.add("show");
+  }
+  document.getElementById("editCancel").onclick = ()=> editOverlay.classList.remove("show");
+  document.getElementById("editSave").onclick = async ()=>{
+    const e = entries.find(x=>x.id===editingId);
+    if(!e) return;
+    const date = document.getElementById("editDate").value;
+    const amount = parseFloat(document.getElementById("editAmount").value);
+    if(!date || !amount || amount<=0){ showToast("Please check date/amount"); return; }
+    const company = document.getElementById("editCompany").value;
+    const note = document.getElementById("editNote").value.trim();
+    const method = e.type==="payment" ? document.getElementById("editMethod").value : "";
+    const refNo = (e.type==="payment" && method!=="CASH") ? document.getElementById("editRefNo").value.trim() : "";
+    await callApi("update", {entry:{id:e.id, type:e.type, date, company, amount, note, method, refNo}});
+    editOverlay.classList.remove("show");
+    showToast("Entry updated");
+    render();
+  };
+
+  // ---------- delete modal ----------
+  const deleteOverlay = document.getElementById("deleteModalOverlay");
+  function openDelete(id){ deletingId = id; deleteOverlay.classList.add("show"); }
+  document.getElementById("deleteCancel").onclick = ()=> deleteOverlay.classList.remove("show");
+  document.getElementById("deleteConfirm").onclick = async ()=>{
+    await callApi("delete", {id:deletingId});
+    deleteOverlay.classList.remove("show");
+    showToast("Entry deleted");
+    render();
+  };
+
+  // ---------- reset all ----------
+  const resetOverlay = document.getElementById("resetModalOverlay");
+  document.getElementById("resetBtn").onclick = ()=> resetOverlay.classList.add("show");
+  document.getElementById("resetCancel").onclick = ()=> resetOverlay.classList.remove("show");
+  document.getElementById("resetConfirm").onclick = async ()=>{
+    entries = [];
+    await persist();
+    resetOverlay.classList.remove("show");
+    showToast("All data cleared");
+    render();
+  };
+
+  // ---------- REPORTS ----------
+  function applyPreset(preset){
+    const now = new Date();
+    let from, to = todayStr();
+    if(preset==="week"){
+      const d = new Date(now); d.setDate(d.getDate()-6);
+      from = d.toISOString().slice(0,10);
+    } else if(preset==="month"){
+      from = now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0")+"-01";
+    } else if(preset==="all"){
+      from = "";
+      to = "";
+    }
+    reportRange = {from, to, preset};
+    renderReports();
+  }
+
+  function renderReports(){
+    const from = reportRange.from, to = reportRange.to;
+    const inPeriod = entries.filter(e=>inRange(e, from, to));
+    const periodTotals = totals(inPeriod);
+
+    // due as of "to" date (or all-time if no "to")
+    const asOf = entries.filter(e=> to ? e.date<=to : true);
+    const dueAsOf = totals(asOf).due;
+
+    const companyRows = COMPANIES.map(c=>{
+      const list = inPeriod.filter(e=>e.type==="load" && e.company===c.name);
+      const sum = list.reduce((s,e)=>s+Number(e.amount),0);
+      return {name:c.name, color:c.color, count:list.length, sum};
+    });
+    const companyTotal = companyRows.reduce((s,r)=>s+r.sum,0);
+
+    const paymentsInPeriod = inPeriod.filter(e=>e.type==="payment").sort((a,b)=>a.date.localeCompare(b.date));
+
+    root.innerHTML = `
+      <div class="topbar">
+        <div>
+          <h1 class="page-title">Reports</h1>
+          <div class="page-sub">Load performance and payment status for the selected period</div>
+        </div>
+        <button class="chip-btn" onclick="window.print()">Print report</button>
+      </div>
+
+      <div class="range-bar">
+        <div class="field">
+          <label>From</label>
+          <input type="date" id="rFrom" value="${from}">
+        </div>
+        <div class="field">
+          <label>To</label>
+          <input type="date" id="rTo" value="${to}">
+        </div>
+        <div class="field">
+          <label>Quick range</label>
+          <div class="quick-range">
+            <button data-p="week" class="${reportRange.preset==='week'?'active':''}">Last 7 days</button>
+            <button data-p="month" class="${reportRange.preset==='month'?'active':''}">This month</button>
+            <button data-p="all" class="${reportRange.preset==='all'?'active':''}">All time</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="due-banner">
+        <div>
+          <div class="label">Balance Due ${to ? "as on " + fmtDate(to) : "(overall)"}</div>
+          <div class="value ${dueAsOf<=0?'settled':'owe'}">${fmtMoney(Math.max(dueAsOf,0))}</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="label">Period Load vs Paid</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:15px;margin-top:6px;">
+            <span style="color:#B9D0FF;">${fmtMoney(periodTotals.load)} load</span> &nbsp;·&nbsp;
+            <span style="color:${'#8CF2C8'};">${fmtMoney(periodTotals.payment)} paid</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title">Load Received by Company ${from||to ? "(selected period)" : "(all time)"}</div>
+      <div style="overflow-x:auto;">
+      <table>
+        <thead><tr><th>Company</th><th>Entries</th><th style="text-align:right;">Amount</th><th>Share</th></tr></thead>
+        <tbody>
+          ${companyRows.map(r=>`
+            <tr>
+              <td><div class="co-label">${companyBadge(r.name,"sm")}<span>${r.name}</span></div></td>
+              <td>${r.count}</td>
+              <td class="amount">${fmtMoney(r.sum)}</td>
+              <td style="width:140px;">
+                <div style="background:var(--soft-fill-hover);border-radius:6px;height:8px;overflow:hidden;">
+                  <div style="width:${companyTotal? (r.sum/companyTotal*100):0}%;background:${r.color};height:100%;"></div>
+                </div>
+              </td>
+            </tr>`).join("")}
+          <tr style="background:var(--soft-fill);font-weight:700;">
+            <td>Total</td><td>${companyRows.reduce((s,r)=>s+r.count,0)}</td>
+            <td class="amount">${fmtMoney(companyTotal)}</td><td></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+
+      <div class="section-title">Payments Sent ${from||to ? "(selected period)" : "(all time)"}</div>
+      <div style="overflow-x:auto;">
+      <table>
+        <thead><tr><th>Date</th><th>Company</th><th>Method</th><th>Note</th><th style="text-align:right;">Amount</th></tr></thead>
+        <tbody>
+          ${paymentsInPeriod.length ? paymentsInPeriod.map(e=>`
+            <tr>
+              <td>${fmtDate(e.date)}</td>
+              <td><div class="co-label">${companyBadge(e.company,"sm")}<span>${e.company==='GENERAL'?'General':e.company}</span></div></td>
+              <td>${methodLabel(e.method)}${e.refNo?`<br><span style="font-size:11px;color:var(--text-muted);">Ref: ${escapeHtml(e.refNo)}</span>`:''}</td>
+              <td style="color:var(--text-muted);">${e.note?escapeHtml(e.note):"—"}</td>
+              <td class="amount">${fmtMoney(e.amount)}</td>
+            </tr>`).join("") : `<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:26px;">No payments in this period.</td></tr>`}
+        </tbody>
+      </table>
+      </div>
+    `;
+
+    document.getElementById("rFrom").onchange = e=>{ reportRange.from=e.target.value; reportRange.preset=""; renderReports(); };
+    document.getElementById("rTo").onchange = e=>{ reportRange.to=e.target.value; reportRange.preset=""; renderReports(); };
+    document.querySelectorAll(".quick-range button").forEach(b=> b.onclick=()=>applyPreset(b.dataset.p));
+  }
+
+  function escapeHtml(s){
+    return s.replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+  }
+
+  // ---------- init ----------
+  (async function init(){
+    if(notConfigured){ document.getElementById("setupBanner").style.display = "flex"; }
+    reportRange.from = todayStr().slice(0,8)+"01";
+    await loadEntries();
+    document.querySelector('.nav-item[data-tab="dashboard"]').classList.add("active");
+    render();
+  })();
+
+})();
+</script>
+</body>
+</html>
