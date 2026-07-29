@@ -700,7 +700,8 @@
   }
   function dueChip(due){
     const cls = due>0 ? 'due-pos' : 'due-clear';
-    return `<span class="amt-chip ${cls}">${fmtMoney(due)}</span>`;
+    const label = due<0 ? '-'+fmtMoney(-due) : fmtMoney(due);
+    return `<span class="amt-chip ${cls}">${label}</span>`;
   }
   function countChip(n){
     return `<span class="count-chip">${n}</span>`;
@@ -822,8 +823,8 @@
         </div>
         <div class="card stat-card due">
           <div class="stat-label">Balance Due</div>
-          <div class="stat-value" style="${t.due<=0?'color:var(--success)':''}">${t.due<=0 ? fmtMoney(0) : fmtMoney(t.due)}</div>
-          <div class="stat-note">${t.due<=0 ? "You're fully settled" : "Owed to distributor"}</div>
+          <div class="stat-value" style="${t.due<=0?'color:var(--success)':''}">${t.due<0 ? fmtMoney(-t.due) : fmtMoney(t.due)}</div>
+          <div class="stat-note">${t.due<0 ? "Credit — you've overpaid" : (t.due===0 ? "You're fully settled" : "Owed to distributor")}</div>
         </div>
       </div>
 
@@ -1172,8 +1173,8 @@
 
       <div class="due-banner">
         <div>
-          <div class="label">Balance Due ${to ? "as on " + fmtDate(to) : "(overall)"}</div>
-          <div class="value ${dueAsOf<=0?'settled':'owe'}">${fmtMoney(Math.max(dueAsOf,0))}</div>
+          <div class="label">Balance Due ${to ? "as on " + fmtDate(to) : "(overall)"}${dueAsOf<0 ? " — credit (overpaid)" : ""}</div>
+          <div class="value ${dueAsOf<=0?'settled':'owe'}">${fmtMoney(Math.abs(dueAsOf))}</div>
         </div>
         <div style="text-align:right;">
           <div class="label">Period Load vs Paid</div>
