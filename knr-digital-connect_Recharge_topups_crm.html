@@ -2,16 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KNR Digital Connect — Ledger</title>
-<meta name="theme-color" content="#0F2044">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="KNR Digital Connect">
-<link rel="apple-touch-icon" href="https://i.ibb.co/fVGMdZpD/Gemini-Generated-Image-rrl806rrl806rrl8.png">
-<link rel="icon" href="https://i.ibb.co/fVGMdZpD/Gemini-Generated-Image-rrl806rrl806rrl8.png">
-<link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 <style>
@@ -19,24 +11,16 @@
     --navy:#0F2044;
     --navy-light:#1B3868;
     --navy-deep:#081226;
-    --bg:#0A1120;
-    --card:#141C30;
+    --bg:#F3F6FB;
+    --card:#FFFFFF;
     --accent:#1FC8B8;
     --accent-dark:#129285;
     --amber:#F5A524;
     --success:#1AA260;
     --danger:#E23D3D;
-    --text:#FFFFFF;
-    --text-muted:#A9B6D9;
-    --border:#26314D;
-    --tint-blue-bg:rgba(79,144,255,0.16);
-    --tint-blue-text:#8FB4FF;
-    --tint-green-bg:rgba(30,200,140,0.16);
-    --tint-green-text:#4ADE9A;
-    --tint-red-bg:rgba(226,61,61,0.18);
-    --tint-red-text:#FF8A8A;
-    --soft-fill:rgba(255,255,255,0.04);
-    --soft-fill-hover:rgba(255,255,255,0.06);
+    --text:#10213D;
+    --text-muted:#64748B;
+    --border:#E4E9F2;
     --radius:14px;
   }
   *{box-sizing:border-box;}
@@ -45,7 +29,6 @@
     background:var(--bg);
     color:var(--text);
     font-family:'Inter',sans-serif;
-    font-weight:500;
     -webkit-font-smoothing:antialiased;
   }
   h1,h2,h3,.display{font-family:'Poppins',sans-serif;}
@@ -121,10 +104,7 @@
   /* ---------- Main ---------- */
   main{flex:1;min-width:0;padding:28px 34px 60px;}
   .topbar{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:26px;flex-wrap:wrap;gap:14px;}
-  .page-title{
-    font-size:22px;font-weight:800;margin:0;display:inline-block;
-    background:var(--accent);color:#062723;padding:6px 16px;border-radius:9px;
-  }
+  .page-title{font-size:22px;font-weight:700;margin:0;}
   .page-sub{color:var(--text-muted);font-size:13.5px;margin-top:4px;}
 
   .mobile-bar{display:none;}
@@ -136,13 +116,12 @@
     background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
     padding:18px 20px;
   }
-  .stat-card{position:relative;overflow:hidden;transition:box-shadow .15s ease;}
-  .stat-card:hover{box-shadow:0 8px 22px rgba(16,33,61,0.08);}
+  .stat-card{position:relative;overflow:hidden;}
   .stat-label{font-size:12.5px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em;}
   .stat-value{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:26px;margin-top:8px;}
   .stat-note{font-size:12px;color:var(--text-muted);margin-top:6px;}
   .stat-card.due .stat-value{color:var(--danger);}
-  .stat-card.load .stat-value{color:var(--tint-blue-text);}
+  .stat-card.load .stat-value{color:var(--navy);}
   .stat-card.paid .stat-value{color:var(--success);}
   .stat-icon{position:absolute;right:16px;top:16px;opacity:.14;}
 
@@ -152,9 +131,9 @@
   .company-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
   .company-card{
     background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;
-    transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+    cursor:pointer;transition:transform .12s ease, box-shadow .12s ease, border-color .12s ease;
   }
-  .company-card:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,0.35);border-color:var(--tint-blue-text);}
+  .company-card:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(15,32,68,0.09);border-color:var(--accent);}
   .company-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
   .dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
   .company-head span{font-weight:700;font-size:13px;}
@@ -167,9 +146,6 @@
   }
   .co-badge.sz-md{width:34px;height:34px;font-size:12px;}
   .co-badge.sz-sm{width:24px;height:24px;font-size:9.5px;border-radius:7px;}
-  .co-badge.has-logo{background:#fff;box-shadow:inset 0 0 0 1px var(--border), 0 1px 3px rgba(16,33,61,0.08);}
-  .co-badge.has-logo img{width:100%;height:100%;object-fit:contain;border-radius:inherit;padding:4px;}
-  .co-badge.sz-sm.has-logo img{padding:2.5px;}
   .co-cat-icon{
     position:absolute;bottom:-4px;right:-4px;width:15px;height:15px;border-radius:50%;
     background:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,0.25);
@@ -183,37 +159,18 @@
 
   /* recent list */
   .tx-list{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
-  .tx-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:14px 18px;border-bottom:1px solid var(--border);}
+  .tx-row{display:flex;align-items:center;gap:14px;padding:13px 18px;border-bottom:1px solid var(--border);}
   .tx-row:last-child{border-bottom:none;}
-  .tx-badge{font-size:10.5px;font-weight:800;padding:5px 10px;border-radius:20px;letter-spacing:.03em;flex-shrink:0;}
-  .tx-badge.load{background:var(--tint-blue-bg);color:var(--tint-blue-text);}
-  .tx-badge.payment{background:var(--tint-green-bg);color:var(--tint-green-text);}
-  .tx-main{flex:1 1 120px;min-width:0;}
-  .tx-company{font-weight:700;font-size:14px;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-  .tx-note{font-size:11.5px;color:var(--text-muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-  .tx-date{
-    font-size:11px;font-weight:700;color:#0B1A33;background:#DCE4F5;
-    padding:4px 9px;border-radius:20px;flex-shrink:0;
-  }
-  .tx-amount{
-    font-family:'JetBrains Mono',monospace;font-weight:800;font-size:13.5px;
-    padding:5px 11px;border-radius:20px;flex-shrink:0;margin-left:auto;
-  }
-  .tx-amount.load{background:#DCE9FF;color:#0B1A33;}
-  .tx-amount.payment{background:#D8F5E6;color:#063820;}
-
-  .amt-chip{
-    display:inline-block;font-family:'JetBrains Mono',monospace;font-weight:800;font-size:12.5px;
-    padding:5px 11px;border-radius:20px;white-space:nowrap;
-  }
-  .amt-chip.load{background:#DCE9FF;color:#0B1A33;}
-  .amt-chip.payment{background:#D8F5E6;color:#063820;}
-  .amt-chip.due-pos{background:#FFE1E1;color:#5A0000;}
-  .amt-chip.due-clear{background:#D8F5E6;color:#063820;}
-  .count-chip{
-    display:inline-block;font-family:'JetBrains Mono',monospace;font-weight:800;font-size:12.5px;
-    padding:5px 11px;border-radius:20px;background:var(--soft-fill-hover);color:var(--text);
-  }
+  .tx-badge{font-size:10.5px;font-weight:700;padding:4px 9px;border-radius:20px;letter-spacing:.03em;}
+  .tx-badge.load{background:#E7F0FF;color:var(--navy-light);}
+  .tx-badge.payment{background:#E4F8EE;color:var(--success);}
+  .tx-main{flex:1;min-width:0;}
+  .tx-company{font-weight:600;font-size:13.5px;}
+  .tx-note{font-size:12px;color:var(--text-muted);margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .tx-date{font-size:12px;color:var(--text-muted);width:88px;flex-shrink:0;}
+  .tx-amount{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;width:110px;text-align:right;flex-shrink:0;}
+  .tx-amount.load{color:var(--navy);}
+  .tx-amount.payment{color:var(--success);}
   .empty-state{padding:40px 20px;text-align:center;color:var(--text-muted);font-size:13.5px;}
   .empty-state .signal-bars{color:var(--border);height:26px;margin-bottom:10px;}
   .empty-state .signal-bars span{width:6px;}
@@ -222,21 +179,19 @@
   .form-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:26px;max-width:620px;}
   .type-toggle{display:flex;gap:10px;margin-bottom:22px;}
   .type-btn{
-    flex:1;padding:14px;border-radius:12px;border:1.5px solid var(--border);background:var(--soft-fill);
+    flex:1;padding:14px;border-radius:12px;border:1.5px solid var(--border);background:#FAFBFD;
     font-weight:700;font-size:14px;color:var(--text-muted);display:flex;align-items:center;justify-content:center;gap:8px;
     transition:all .15s ease;
   }
-  .type-btn.active.load{border-color:var(--tint-blue-text);background:var(--tint-blue-bg);color:var(--tint-blue-text);}
-  .type-btn.active.payment{border-color:var(--tint-green-text);background:var(--tint-green-bg);color:var(--tint-green-text);}
+  .type-btn.active.load{border-color:var(--navy);background:#EEF3FF;color:var(--navy);}
+  .type-btn.active.payment{border-color:var(--success);background:#EAFBF2;color:var(--success);}
 
   .field{margin-bottom:16px;}
   .field label{display:block;font-size:12.5px;font-weight:600;color:var(--text-muted);margin-bottom:6px;}
   .field input, .field select, .field textarea{
     width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:9px;
-    font-size:14px;font-family:'Inter',sans-serif;background:var(--soft-fill);color:var(--text);
+    font-size:14px;font-family:'Inter',sans-serif;background:#fff;color:var(--text);
   }
-  .field select option{color:#10213D;background:#FFFFFF;}
-  select option{color:#10213D;background:#FFFFFF;}
   .field input.mono{font-family:'JetBrains Mono',monospace;}
   .field input:focus, .field select:focus, .field textarea:focus{outline:none;border-color:var(--accent);}
   .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
@@ -260,27 +215,27 @@
   .filter-bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;align-items:flex-end;}
   .filter-bar .field{margin-bottom:0;min-width:140px;}
   .filter-bar .field.grow{flex:1;min-width:160px;}
-  .chip-btn{padding:10px 16px;border-radius:9px;border:1.5px solid var(--border);background:var(--soft-fill);font-size:13px;font-weight:600;color:var(--text-muted);height:44px;}
-  .chip-btn:hover{border-color:var(--tint-blue-text);color:var(--tint-blue-text);}
+  .chip-btn{padding:10px 16px;border-radius:9px;border:1.5px solid var(--border);background:#fff;font-size:13px;font-weight:600;color:var(--text-muted);height:44px;}
+  .chip-btn:hover{border-color:var(--navy);color:var(--navy);}
 
   table{width:100%;border-collapse:collapse;background:var(--card);border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);}
   thead th{
     text-align:left;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--text-muted);
-    padding:12px 16px;border-bottom:1px solid var(--border);background:var(--soft-fill);font-weight:700;
+    padding:12px 16px;border-bottom:1px solid var(--border);background:#FAFBFD;font-weight:700;
   }
   tbody td{padding:13px 16px;border-bottom:1px solid var(--border);font-size:13.5px;vertical-align:middle;}
   tbody tr:last-child td{border-bottom:none;}
-  tbody tr:hover{background:var(--soft-fill);}
+  tbody tr:hover{background:#FAFBFF;}
   td.amount{font-family:'JetBrains Mono',monospace;font-weight:700;text-align:right;}
   .row-actions{display:flex;gap:8px;justify-content:flex-end;}
   .icon-btn{background:none;border:none;padding:5px;border-radius:6px;color:var(--text-muted);}
   .icon-btn:hover{background:var(--border);color:var(--text);}
-  .icon-btn.del:hover{color:var(--tint-red-text);background:var(--tint-red-bg);}
+  .icon-btn.del:hover{color:var(--danger);background:#FDE8E8;}
 
   /* ---------- Reports ---------- */
   .range-bar{display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:22px;}
   .quick-range{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;}
-  .quick-range button{padding:8px 13px;border-radius:20px;border:1.5px solid var(--border);background:var(--soft-fill);font-size:12.5px;font-weight:600;color:var(--text-muted);}
+  .quick-range button{padding:8px 13px;border-radius:20px;border:1.5px solid var(--border);background:#fff;font-size:12.5px;font-weight:600;color:var(--text-muted);}
   .quick-range button.active{background:var(--navy);color:#fff;border-color:var(--navy);}
   .due-banner{
     background:linear-gradient(120deg,var(--navy) 0%,var(--navy-light) 100%);color:#fff;border-radius:var(--radius);
@@ -296,57 +251,15 @@
     position:fixed;inset:0;background:rgba(8,18,38,0.55);display:none;align-items:center;justify-content:center;z-index:100;padding:20px;
   }
   .modal-overlay.show{display:flex;}
-  .modal{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:26px;width:100%;max-width:460px;max-height:90vh;overflow:auto;}
+  .modal{background:#fff;border-radius:16px;padding:26px;width:100%;max-width:460px;max-height:90vh;overflow:auto;}
   .modal h3{margin:0 0 18px;font-size:16px;}
   .modal-actions{display:flex;gap:10px;margin-top:6px;}
   .modal-actions button{flex:1;padding:11px;border-radius:9px;border:none;font-weight:700;font-size:13.5px;}
-  .modal-actions .cancel{background:var(--soft-fill-hover);color:var(--text-muted);}
+  .modal-actions .cancel{background:#F1F3F8;color:var(--text-muted);}
   .modal-actions .confirm{background:var(--navy);color:#fff;}
   .modal-actions .danger{background:var(--danger);color:#fff;}
 
   .loading{padding:60px;text-align:center;color:var(--text-muted);font-size:13.5px;}
-
-  /* ---------- Lock screen ---------- */
-  .lock-overlay{
-    position:fixed;inset:0;z-index:200;
-    background:linear-gradient(175deg,var(--navy) 0%,var(--navy-deep) 100%);
-    display:flex;align-items:center;justify-content:center;padding:20px;
-  }
-  .lock-overlay.hidden{display:none;}
-  .lock-card{
-    background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);border-radius:18px;
-    padding:34px 30px;width:100%;max-width:340px;text-align:center;
-    backdrop-filter:blur(6px);
-  }
-  .lock-card img{width:56px;height:56px;border-radius:14px;margin-bottom:14px;box-shadow:0 6px 18px rgba(0,0,0,0.35);}
-  .lock-card h2{color:#fff;font-size:18px;margin:0 0 4px;}
-  .lock-card p{color:#9FB2D6;font-size:12.5px;margin:0 0 22px;}
-  .lock-card input{
-    width:100%;padding:13px 14px;border-radius:10px;border:1.5px solid rgba(255,255,255,0.18);
-    background:rgba(255,255,255,0.08);color:#fff;font-size:16px;text-align:center;letter-spacing:.08em;
-    font-family:'JetBrains Mono',monospace;
-  }
-  .lock-card input::placeholder{color:#6C81AA;letter-spacing:normal;font-family:'Inter',sans-serif;}
-  .lock-card input:focus{outline:none;border-color:var(--accent);}
-  .lock-card button{
-    width:100%;margin-top:12px;padding:13px;border:none;border-radius:10px;background:var(--accent);
-    color:#062723;font-weight:700;font-size:14px;
-  }
-  .lock-card button:hover{background:#28DFCC;}
-  .lock-error{color:#FFB4A8;font-size:12.5px;margin-top:10px;min-height:16px;}
-
-  /* ---------- Install (add to home screen) ---------- */
-  .install-note{font-size:12px;color:var(--text-muted);line-height:1.6;text-align:left;}
-  .install-note b{display:block;color:var(--text);font-size:13px;margin:14px 0 4px;}
-  .install-note b:first-child{margin-top:0;}
-
-  .setup-banner{
-    background:rgba(245,165,36,0.12);border:1.5px solid rgba(245,165,36,0.4);border-radius:12px;
-    padding:14px 18px;margin-bottom:20px;font-size:13px;color:#F0C27B;
-    display:flex;gap:12px;align-items:flex-start;line-height:1.5;
-  }
-  .setup-banner b{display:block;font-size:13.5px;margin-bottom:2px;color:var(--amber);}
-  .setup-banner svg{flex-shrink:0;margin-top:1px;color:var(--amber);}
 
   /* ---------- Responsive ---------- */
   @media (max-width:900px){
@@ -364,30 +277,16 @@
     main{padding:20px 16px 90px;}
     .mobile-bar{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
     .mobile-bar img{width:36px;height:36px;border-radius:9px;}
-    .mobile-bar .brand-name{font-family:'Poppins',sans-serif;font-weight:700;font-size:15px;color:var(--text);}
+    .mobile-bar .brand-name{font-family:'Poppins',sans-serif;font-weight:700;font-size:15px;color:var(--navy);}
     .field-row{grid-template-columns:1fr;}
   }
   @media (max-width:560px){
     .company-grid{grid-template-columns:1fr;}
     .tx-note{display:none;}
-    .tx-date{order:9;flex-basis:100%;margin-top:2px;}
-    .tx-row{gap:8px 10px;padding:13px 14px;}
-    .tx-company{font-size:13.5px;}
   }
 </style>
 </head>
 <body>
-
-<div class="lock-overlay" id="lockOverlay">
-  <div class="lock-card">
-    <img src="https://i.ibb.co/fVGMdZpD/Gemini-Generated-Image-rrl806rrl806rrl8.png" alt="KNR Digital Connect">
-    <h2>KNR Digital Connect</h2>
-    <p>Enter your password to open the ledger</p>
-    <input type="password" id="lockInput" placeholder="Password" autocomplete="off" inputmode="text">
-    <button id="lockSubmit">Unlock</button>
-    <div class="lock-error" id="lockError"></div>
-  </div>
-</div>
 
 <div class="app">
   <aside class="sidebar">
@@ -417,9 +316,7 @@
       </button>
     </nav>
     <div class="sidebar-footer">
-      Data is saved to your Google Drive and stays in sync across your devices.
-      <button id="installBtn">📲 Add to Home Screen</button>
-      <button id="lockNowBtn">🔒 Lock now</button>
+      Data is stored securely to your account and stays saved between visits.
       <button id="resetBtn">Reset all data</button>
     </div>
   </aside>
@@ -430,35 +327,11 @@
       <div class="brand-name">KNR Digital Connect</div>
     </div>
 
-    <div id="setupBanner" class="setup-banner" style="display:none;">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01M10.29 3.86l-8.18 14.18A2 2 0 0 0 3.82 21h16.36a2 2 0 0 0 1.71-2.96L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
-      <div>
-        <b>Google Drive storage not connected yet</b>
-        Deploy the included KNR-AppsScript-Backend.gs to a Google Sheet in your Drive, then paste the Web app URL into GAS_URL near the top of this file's script. Until then, entries won't be saved.
-      </div>
-    </div>
     <div id="viewRoot" class="loading">Loading your ledger…</div>
   </main>
 </div>
 
 <div class="toast" id="toast"><span class="dot"></span><span id="toastMsg"></span></div>
-
-<div class="modal-overlay" id="installModalOverlay">
-  <div class="modal">
-    <h3>Add to Home Screen</h3>
-    <div class="install-note">
-      <b>📱 Android (Chrome)</b>
-      Tap the ⋮ menu (top-right) → "Add to Home screen" or "Install app" → Add. An app icon will appear on your home screen.
-      <b>🍏 iPhone (Safari)</b>
-      Tap the Share icon (square with an arrow) → scroll down → "Add to Home Screen" → Add.
-      <b>💻 PC (Chrome/Edge)</b>
-      Click the ⊕ install icon in the address bar (if shown), or the ⋮ menu → "Install page as app".
-    </div>
-    <div class="modal-actions">
-      <button class="cancel" id="installClose">Got it</button>
-    </div>
-  </div>
-</div>
 
 <div class="modal-overlay" id="editModalOverlay">
   <div class="modal">
@@ -474,18 +347,6 @@
     <div class="field">
       <label>Amount (₹)</label>
       <input type="number" class="mono" id="editAmount" min="0" step="1">
-    </div>
-    <div class="field" id="editMethodWrap" style="display:none;">
-      <label>Payment Method</label>
-      <select id="editMethod">
-        <option value="CASH">Cash</option>
-        <option value="UPI">UPI</option>
-        <option value="NETBANKING">Net Banking</option>
-      </select>
-    </div>
-    <div class="field" id="editRefWrap" style="display:none;">
-      <label>Reference / Transaction No. (optional)</label>
-      <input type="text" id="editRefNo" placeholder="e.g. UPI ref or UTR number">
     </div>
     <div class="field">
       <label>Note (optional)</label>
@@ -525,14 +386,14 @@
   "use strict";
 
   const COMPANIES = [
-    {name:"JIO", color:"#0A2885", initials:"J",  cat:"mobile", logo:"https://i.ibb.co/rGZrjG9x/jio-logo-icon.webp"},
-    {name:"AIRTEL", color:"#ED1C24", initials:"A", cat:"mobile", logo:"https://i.ibb.co/qY1XkT7Y/airtel-logo.jpg"},
-    {name:"VI (VODA IDEA)", color:"#D6006B", initials:"VI", cat:"mobile", logo:"https://i.ibb.co/Df0nY0v0/vodafone-idea-logo.png"},
+    {name:"JIO", color:"#0A2885", initials:"J",  cat:"mobile"},
+    {name:"AIRTEL", color:"#ED1C24", initials:"A", cat:"mobile"},
+    {name:"VI (VODA IDEA)", color:"#D6006B", initials:"VI", cat:"mobile"},
     {name:"BSNL", color:"#00539B", initials:"BS", cat:"mobile"},
-    {name:"SUNDIRECT", color:"#F7941D", initials:"SD", cat:"dth", logo:"https://i.ibb.co/9krm6x8r/SUNDIRECT-LOGO.png"},
-    {name:"TATA PLAY", color:"#E31E24", initials:"TP", cat:"dth", logo:"https://i.ibb.co/1GJfB0XY/tata-play.jpg"},
-    {name:"AIRTEL DTH", color:"#9E1016", initials:"AD", cat:"dth", logo:"https://i.ibb.co/tTp3nSXb/og-airtel-digital-tv.png"},
-    {name:"AP FIBER", color:"#0B8043", initials:"AF", cat:"fiber", logo:"https://i.ibb.co/hJ5BKSYN/AP-FIBER.png"},
+    {name:"SUNDIRECT", color:"#F7941D", initials:"SD", cat:"dth"},
+    {name:"TATA PLAY", color:"#E31E24", initials:"TP", cat:"dth"},
+    {name:"AIRTEL DTH", color:"#9E1016", initials:"AD", cat:"dth"},
+    {name:"AP FIBER", color:"#0B8043", initials:"AF", cat:"fiber"},
   ];
 
   // small category icons shown as a corner badge on each company monogram
@@ -549,114 +410,19 @@
     }
     const c = COMPANIES.find(x=>x.name===name);
     if(!c) return `<span class="co-badge sz-${size}" style="background:#94A3B8;">?</span>`;
-    if(c.logo){
-      // real brand logo, with initials as a silent fallback if the image ever fails to load
-      return `<span class="co-badge sz-${size} has-logo">
-        <img src="${c.logo}" alt="${c.name} logo" loading="lazy"
-             onerror="this.parentElement.classList.remove('has-logo');this.parentElement.style.background='${c.color}';this.remove();">
-        <span class="co-cat-icon">${CAT_ICONS[c.cat]}</span>
-      </span>`;
-    }
     return `<span class="co-badge sz-${size}" style="background:${c.color};">${c.initials}<span class="co-cat-icon">${CAT_ICONS[c.cat]}</span></span>`;
   }
   // ============================================================
-  // GOOGLE DRIVE STORAGE — data is saved into a Google Sheet in your
-  // own Drive via a small Apps Script "backend". Deploy
-  // KNR-AppsScript-Backend.gs (see the setup notes inside that file)
-  // and paste the Web app URL it gives you below.
+  // FREE STORAGE CONFIG — Google Sheets backend (via Apps Script)
+  // Paste the Web app URL you got after deploying KNR-AppsScript-Backend.gs
   // Example: "https://script.google.com/macros/s/AKfycb.../exec"
-  // Once set, the page works the same on your phone and your PC as
-  // long as you open it while signed in — the Sheet itself is the
-  // single shared source of truth, so both devices always see the
-  // same data.
   // ============================================================
-  const GAS_URL = "https://script.google.com/macros/s/AKfycbzvAl2iaUQsc1i_5T8_cK_Wd1J33EECCwGPK8T3SvtGCcrQPQ82guFMTPFEP6cr4ZwA3Q/exec";
-
-  // ============================================================
-  // APP PASSWORD — a simple lock screen so casual/family members
-  // can't open the ledger without a password. Change "1234" below
-  // to whatever you want. NOTE: this is a basic deterrent, not
-  // bank-grade security — it's a plain check inside the page code,
-  // since there's no server involved. Good enough to stop someone
-  // from casually opening the file, not a secure login system.
-  //
-  // By design, the unlock state is kept only in memory (not saved
-  // anywhere) — so the lock screen reappears on every refresh, every
-  // re-open of the app, AND automatically after 5 minutes of no
-  // activity while the app is open.
-  // ============================================================
-  const APP_PASSWORD = "1234";
-  const IDLE_LOCK_MS = 5 * 60 * 1000; // 5 minutes
-
-  const lockOverlay = document.getElementById("lockOverlay");
-  const lockInput = document.getElementById("lockInput");
-  const lockError = document.getElementById("lockError");
-  let idleTimer = null;
-
-  function lockNow(){
-    lockOverlay.classList.remove("hidden");
-    lockInput.value = "";
-    lockError.textContent = "";
-    if(idleTimer) clearTimeout(idleTimer);
-    setTimeout(()=>lockInput.focus(), 100);
-  }
-
-  function resetIdleTimer(){
-    if(idleTimer) clearTimeout(idleTimer);
-    if(lockOverlay.classList.contains("hidden")){
-      idleTimer = setTimeout(lockNow, IDLE_LOCK_MS);
-    }
-  }
-
-  function tryUnlock(){
-    if(lockInput.value === APP_PASSWORD){
-      lockOverlay.classList.add("hidden");
-      lockError.textContent = "";
-      resetIdleTimer();
-    } else {
-      lockError.textContent = "Incorrect password, try again.";
-      lockInput.value = "";
-      lockInput.focus();
-    }
-  }
-  document.getElementById("lockSubmit").onclick = tryUnlock;
-  lockInput.addEventListener("keydown", e=>{ if(e.key==="Enter") tryUnlock(); });
-
-  // always start locked — every refresh / re-open requires the password again
-  setTimeout(()=>lockInput.focus(), 200);
-
-  ["mousemove","mousedown","keydown","touchstart","scroll"].forEach(evt=>{
-    document.addEventListener(evt, resetIdleTimer, {passive:true});
-  });
-
-  document.getElementById("lockNowBtn").onclick = lockNow;
-
-  // ---------- Register service worker (enables real "Install App" prompt
-  // once this page is hosted online over https, e.g. GitHub Pages) ----------
-  if("serviceWorker" in navigator && (location.protocol==="https:" || location.hostname==="localhost")){
-    navigator.serviceWorker.register("service-worker.js").catch(()=>{});
-  }
-
-  // ---------- Add to Home Screen ----------
-  let deferredInstallPrompt = null;
-  window.addEventListener("beforeinstallprompt", (e)=>{
-    e.preventDefault();
-    deferredInstallPrompt = e;
-  });
-  const installOverlay = document.getElementById("installModalOverlay");
-  document.getElementById("installBtn").onclick = async ()=>{
-    if(deferredInstallPrompt){
-      deferredInstallPrompt.prompt();
-      await deferredInstallPrompt.userChoice;
-      deferredInstallPrompt = null;
-    } else {
-      installOverlay.classList.add("show");
-    }
-  };
-  document.getElementById("installClose").onclick = ()=> installOverlay.classList.remove("show");
+  const GAS_URL = "PASTE_YOUR_WEB_APP_URL_HERE";
 
   let entries = [];
   let activeTab = "dashboard";
+  let selectedCompany = null;
+  let prefillCompany = null;
   let entryType = "load";
   let ledgerFilters = {type:"all", company:"all", from:"", to:""};
   let reportRange = {from:"", to:"", preset:"month"};
@@ -692,20 +458,6 @@
     return c ? c.color : "#94A3B8";
   }
   function uid(){ return "e_"+Date.now()+"_"+Math.random().toString(36).slice(2,8); }
-  function methodLabel(m){
-    return {CASH:"Cash", UPI:"UPI", NETBANKING:"Net Banking"}[m] || "Cash";
-  }
-  function amountChip(value, type){
-    return `<span class="amt-chip ${type==='payment'?'payment':'load'}">${fmtMoney(value)}</span>`;
-  }
-  function dueChip(due){
-    const cls = due>0 ? 'due-pos' : 'due-clear';
-    const label = due<0 ? '-'+fmtMoney(-due) : fmtMoney(due);
-    return `<span class="amt-chip ${cls}">${label}</span>`;
-  }
-  function countChip(n){
-    return `<span class="count-chip">${n}</span>`;
-  }
 
   // ---------- storage (Google Sheets via Apps Script — free, in your Drive) ----------
   let notConfigured = GAS_URL.indexOf("PASTE_YOUR_WEB_APP_URL_HERE") !== -1;
@@ -752,6 +504,7 @@
   // ---------- render router ----------
   function setActiveTab(tab){
     activeTab = tab;
+    selectedCompany = null;
     document.querySelectorAll(".nav-item").forEach(b=>b.classList.toggle("active", b.dataset.tab===tab));
     render();
   }
@@ -760,11 +513,19 @@
     if(btn) setActiveTab(btn.dataset.tab);
   });
 
+  function goToCompany(name){
+    activeTab = "company";
+    selectedCompany = name;
+    document.querySelectorAll(".nav-item").forEach(b=>b.classList.remove("active"));
+    render();
+  }
+
   function render(){
     if(activeTab==="dashboard") renderDashboard();
     else if(activeTab==="entry") renderEntry();
     else if(activeTab==="ledger") renderLedger();
     else if(activeTab==="reports") renderReports();
+    else if(activeTab==="company") renderCompanyDetail();
   }
 
   // ---------- DASHBOARD ----------
@@ -775,27 +536,25 @@
 
     let companyCards = COMPANIES.map(c=>{
       const loadList = entries.filter(e=>e.type==="load" && e.company===c.name);
+      const payList = entries.filter(e=>e.type==="payment" && e.company===c.name);
       const loadSum = loadList.reduce((s,e)=>s+Number(e.amount),0);
-      const paidList = entries.filter(e=>e.type==="payment" && e.company===c.name);
-      const paidSum = paidList.reduce((s,e)=>s+Number(e.amount),0);
-      const due = loadSum - paidSum;
-      return `<div class="company-card">
+      const paidSum = payList.reduce((s,e)=>s+Number(e.amount),0);
+      const outstanding = loadSum - paidSum;
+      return `<div class="company-card" data-company="${c.name}" role="button" tabindex="0">
         <div class="company-head">${companyBadge(c.name,"md")}<span>${c.name}</span></div>
-        <div class="company-row"><span>Load received</span>${amountChip(loadSum,'load')}</div>
-        <div class="company-row"><span>Paid</span>${amountChip(paidSum,'payment')}</div>
-        <div class="company-row"><span>Outstanding</span>${dueChip(due)}</div>
-        <div class="company-row"><span>Entries</span>${countChip(loadList.length + paidList.length)}</div>
+        <div class="company-row"><span>Load received</span><b>${fmtMoney(loadSum)}</b></div>
+        <div class="company-row"><span>Paid</span><b>${fmtMoney(paidSum)}</b></div>
+        <div class="company-row"><span>Outstanding</span><b style="color:${outstanding>0?'var(--danger)':(outstanding<0?'var(--success)':'inherit')}">${outstanding<0? '-'+fmtMoney(Math.abs(outstanding)) : fmtMoney(outstanding)}</b></div>
+        <div class="company-row"><span>Entries</span><b>${loadList.length+payList.length}</b></div>
       </div>`;
     }).join("");
-
-    const generalPaid = entries.filter(e=>e.type==="payment" && e.company==="GENERAL").reduce((s,e)=>s+Number(e.amount),0);
 
     let txRows = recent.length ? recent.map(e=>`
       <div class="tx-row">
         <span class="tx-badge ${e.type}">${e.type==="load"?"LOAD":"PAID"}</span>
         <div class="tx-main">
           <div class="tx-company">${e.company}</div>
-          ${e.type==='payment' ? `<div class="tx-note">${methodLabel(e.method)}${e.refNo?` · Ref: ${escapeHtml(e.refNo)}`:''}${e.note?` — ${escapeHtml(e.note)}`:''}</div>` : (e.note ? `<div class="tx-note">${escapeHtml(e.note)}</div>` : "")}
+          ${e.note ? `<div class="tx-note">${escapeHtml(e.note)}</div>` : ""}
         </div>
         <div class="tx-date">${fmtDate(e.date)}</div>
         <div class="tx-amount ${e.type}">${fmtMoney(e.amount)}</div>
@@ -823,18 +582,97 @@
         </div>
         <div class="card stat-card due">
           <div class="stat-label">Balance Due</div>
-          <div class="stat-value" style="${t.due<=0?'color:var(--success)':''}">${t.due<0 ? fmtMoney(-t.due) : fmtMoney(t.due)}</div>
-          <div class="stat-note">${t.due<0 ? "Credit — you've overpaid" : (t.due===0 ? "You're fully settled" : "Owed to distributor")}</div>
+          <div class="stat-value" style="${t.due<=0?'color:var(--success)':''}">${t.due<=0 ? fmtMoney(0) : fmtMoney(t.due)}</div>
+          <div class="stat-note">${t.due<=0 ? "You're fully settled" : "Owed to distributor"}</div>
         </div>
       </div>
 
       <div class="section-title">Company-wise Load</div>
       <div class="company-grid">${companyCards}</div>
-      ${generalPaid>0 ? `<div style="margin-top:14px;font-size:12.5px;color:var(--text-muted);">ℹ️ ${fmtMoney(generalPaid)} was paid as "General" (not linked to a specific operator) — it lowers your overall Balance Due above, but isn't split into the operator cards.</div>` : ``}
 
       <div class="section-title">Recent Activity</div>
       <div class="tx-list">${txRows}</div>
     `;
+
+    document.querySelectorAll(".company-card").forEach(el=>{
+      el.onclick = ()=> goToCompany(el.dataset.company);
+      el.onkeydown = (ev)=>{ if(ev.key==="Enter") goToCompany(el.dataset.company); };
+    });
+  }
+
+  // ---------- COMPANY DETAIL (click-through from dashboard) ----------
+  function renderCompanyDetail(){
+    const name = selectedCompany;
+    const list = entries.filter(e=>e.company===name).sort((a,b)=> b.date.localeCompare(a.date) || b.ts-a.ts);
+    const t = totals(list);
+    const outstanding = t.due;
+    const label = name==='GENERAL' ? 'General' : name;
+
+    root.innerHTML = `
+      <button class="chip-btn" id="backToDash" style="margin-bottom:16px;">← Back to Dashboard</button>
+      <div class="topbar">
+        <div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            ${companyBadge(name,"md")}
+            <h1 class="page-title" style="margin:0;">${label}</h1>
+          </div>
+          <div class="page-sub">All load and payment entries for ${label}</div>
+        </div>
+        <button class="chip-btn" id="addForCompany">+ Add entry for ${label}</button>
+      </div>
+
+      <div class="grid cards3">
+        <div class="card stat-card load">
+          <div class="stat-label">Load Received</div>
+          <div class="stat-value">${fmtMoney(t.load)}</div>
+        </div>
+        <div class="card stat-card paid">
+          <div class="stat-label">Paid</div>
+          <div class="stat-value">${fmtMoney(t.payment)}</div>
+        </div>
+        <div class="card stat-card due">
+          <div class="stat-label">Outstanding</div>
+          <div class="stat-value" style="color:${outstanding>0?'var(--danger)':(outstanding<0?'var(--success)':'var(--text)')}">${outstanding<0?'-'+fmtMoney(Math.abs(outstanding)):fmtMoney(outstanding)}</div>
+          <div class="stat-note">${outstanding>0?'Owed to distributor':(outstanding<0?"You've overpaid (credit)":"Fully settled")}</div>
+        </div>
+      </div>
+
+      <div class="section-title">All Entries for ${label}</div>
+      <div style="overflow-x:auto;">
+      <table>
+        <thead><tr><th>Date</th><th>Type</th><th>Note</th><th style="text-align:right;">Amount</th><th></th></tr></thead>
+        <tbody>
+          ${list.length ? list.map(e=>`
+            <tr data-id="${e.id}">
+              <td>${fmtDate(e.date)}</td>
+              <td><span class="tx-badge ${e.type}">${e.type==="load"?"LOAD":"PAID"}</span></td>
+              <td style="color:var(--text-muted);">${e.note?escapeHtml(e.note):"—"}</td>
+              <td class="amount">${fmtMoney(e.amount)}</td>
+              <td>
+                <div class="row-actions">
+                  <button class="icon-btn edit" data-id="${e.id}" title="Edit">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                  </button>
+                  <button class="icon-btn del" data-id="${e.id}" title="Delete">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4h8v2m-9 0 1 14h8l1-14"/></svg>
+                  </button>
+                </div>
+              </td>
+            </tr>`).join("") : `<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:34px;">No entries yet for ${label}.</td></tr>`}
+        </tbody>
+      </table>
+      </div>
+    `;
+
+    document.getElementById("backToDash").onclick = ()=> setActiveTab("dashboard");
+    document.getElementById("addForCompany").onclick = ()=>{
+      prefillCompany = name;
+      activeTab = "entry";
+      document.querySelectorAll(".nav-item").forEach(b=>b.classList.toggle("active", b.dataset.tab==="entry"));
+      render();
+    };
+    document.querySelectorAll(".icon-btn.edit").forEach(b=> b.onclick=()=>openEdit(b.dataset.id));
+    document.querySelectorAll(".icon-btn.del").forEach(b=> b.onclick=()=>openDelete(b.dataset.id));
   }
 
   // ---------- NEW ENTRY ----------
@@ -878,23 +716,6 @@
           <input type="number" class="mono" id="fAmount" min="0" step="1" placeholder="e.g. 5000">
         </div>
 
-        ${entryType==='payment' ? `
-        <div class="field-row">
-          <div class="field">
-            <label>Payment Method</label>
-            <select id="fMethod">
-              <option value="CASH">Cash</option>
-              <option value="UPI">UPI</option>
-              <option value="NETBANKING">Net Banking</option>
-            </select>
-          </div>
-          <div class="field" id="fRefWrap" style="display:none;">
-            <label>Reference / Transaction No. (optional)</label>
-            <input type="text" id="fRefNo" placeholder="e.g. UPI ref or UTR number">
-          </div>
-        </div>
-        ` : ``}
-
         <div class="field">
           <label>Note (optional)</label>
           <input type="text" id="fNote" placeholder="e.g. UPI ref, or remarks">
@@ -911,23 +732,20 @@
 
     const fCompany = document.getElementById("fCompany");
     const fPreview = document.getElementById("fCompanyPreview");
+    if(prefillCompany && (entryType!=='payment' || prefillCompany!=='')){
+      const optionExists = Array.from(fCompany.options).some(o=>o.value===prefillCompany);
+      if(optionExists) fCompany.value = prefillCompany;
+      prefillCompany = null;
+    }
     function updatePreview(){ fPreview.innerHTML = companyBadge(fCompany.value, "md"); }
     fCompany.onchange = updatePreview;
     updatePreview();
-
-    const fMethod = document.getElementById("fMethod");
-    const fRefWrap = document.getElementById("fRefWrap");
-    if(fMethod){
-      fMethod.onchange = ()=>{ fRefWrap.style.display = fMethod.value==="CASH" ? "none" : "block"; };
-    }
 
     document.getElementById("fSave").onclick = async ()=>{
       const date = document.getElementById("fDate").value;
       const company = document.getElementById("fCompany").value;
       const amount = parseFloat(document.getElementById("fAmount").value);
       const note = document.getElementById("fNote").value.trim();
-      const method = entryType==="payment" ? document.getElementById("fMethod").value : "";
-      const refNo = (entryType==="payment" && method!=="CASH") ? document.getElementById("fRefNo").value.trim() : "";
 
       if(!date){ showToast("Please pick a date"); return; }
       if(!amount || amount<=0){ showToast("Please enter a valid amount"); return; }
@@ -935,12 +753,10 @@
       const btn = document.getElementById("fSave");
       btn.textContent = "Saving…";
       btn.disabled = true;
-      await callApi("add", {entry:{id:uid(), type:entryType, date, company, amount, note, method, refNo, ts:Date.now()}});
+      await callApi("add", {entry:{id:uid(), type:entryType, date, company, amount, note, ts:Date.now()}});
       showToast(entryType==="load" ? "Load entry saved" : "Payment recorded");
       document.getElementById("fAmount").value = "";
       document.getElementById("fNote").value = "";
-      if(document.getElementById("fRefNo")) document.getElementById("fRefNo").value = "";
-      if(fMethod){ fMethod.value = "CASH"; fRefWrap.style.display = "none"; }
       btn.textContent = `Save ${entryType==='load' ? 'Load Entry' : 'Payment'}`;
       btn.disabled = false;
     };
@@ -1008,8 +824,8 @@
         <td>${fmtDate(e.date)}</td>
         <td><span class="tx-badge ${e.type}">${e.type==="load"?"LOAD":"PAID"}</span></td>
         <td><div class="co-label">${companyBadge(e.company,"sm")}<span>${e.company==='GENERAL'?'General':e.company}</span></div></td>
-        <td style="color:var(--text-muted);">${e.type==='payment' ? `<span style="font-weight:600;color:var(--text);">${methodLabel(e.method)}</span>${e.refNo?` · Ref: ${escapeHtml(e.refNo)}`:''}${e.note?`<br><span style="font-size:11.5px;">${escapeHtml(e.note)}</span>`:''}` : (e.note ? escapeHtml(e.note) : "—")}</td>
-        <td class="amount">${amountChip(e.amount, e.type)}</td>
+        <td style="color:var(--text-muted);">${e.note ? escapeHtml(e.note) : "—"}</td>
+        <td class="amount ${e.type==='payment'?'':''}">${fmtMoney(e.amount)}</td>
         <td>
           <div class="row-actions">
             <button class="icon-btn edit" title="Edit" data-id="${e.id}">
@@ -1050,20 +866,6 @@
     sel.value = e.company;
     document.getElementById("editAmount").value = e.amount;
     document.getElementById("editNote").value = e.note || "";
-
-    const isPayment = e.type === "payment";
-    const methodWrap = document.getElementById("editMethodWrap");
-    const refWrap = document.getElementById("editRefWrap");
-    const methodSel = document.getElementById("editMethod");
-    methodWrap.style.display = isPayment ? "block" : "none";
-    methodSel.value = e.method || "CASH";
-    document.getElementById("editRefNo").value = e.refNo || "";
-    function updateRefVisibility(){
-      refWrap.style.display = (isPayment && methodSel.value!=="CASH") ? "block" : "none";
-    }
-    methodSel.onchange = updateRefVisibility;
-    updateRefVisibility();
-
     editOverlay.classList.add("show");
   }
   document.getElementById("editCancel").onclick = ()=> editOverlay.classList.remove("show");
@@ -1075,9 +877,7 @@
     if(!date || !amount || amount<=0){ showToast("Please check date/amount"); return; }
     const company = document.getElementById("editCompany").value;
     const note = document.getElementById("editNote").value.trim();
-    const method = e.type==="payment" ? document.getElementById("editMethod").value : "";
-    const refNo = (e.type==="payment" && method!=="CASH") ? document.getElementById("editRefNo").value.trim() : "";
-    await callApi("update", {entry:{id:e.id, type:e.type, date, company, amount, note, method, refNo}});
+    await callApi("update", {entry:{id:e.id, type:e.type, date, company, amount, note}});
     editOverlay.classList.remove("show");
     showToast("Entry updated");
     render();
@@ -1099,8 +899,7 @@
   document.getElementById("resetBtn").onclick = ()=> resetOverlay.classList.add("show");
   document.getElementById("resetCancel").onclick = ()=> resetOverlay.classList.remove("show");
   document.getElementById("resetConfirm").onclick = async ()=>{
-    entries = [];
-    await persist();
+    await callApi("reset", {});
     resetOverlay.classList.remove("show");
     showToast("All data cleared");
     render();
@@ -1135,9 +934,7 @@
     const companyRows = COMPANIES.map(c=>{
       const list = inPeriod.filter(e=>e.type==="load" && e.company===c.name);
       const sum = list.reduce((s,e)=>s+Number(e.amount),0);
-      const loadAll = entries.filter(e=>e.type==="load" && e.company===c.name).reduce((s,e)=>s+Number(e.amount),0);
-      const paidAll = entries.filter(e=>e.type==="payment" && e.company===c.name).reduce((s,e)=>s+Number(e.amount),0);
-      return {name:c.name, color:c.color, count:list.length, sum, due: loadAll - paidAll};
+      return {name:c.name, color:c.color, count:list.length, sum};
     });
     const companyTotal = companyRows.reduce((s,r)=>s+r.sum,0);
 
@@ -1173,8 +970,8 @@
 
       <div class="due-banner">
         <div>
-          <div class="label">Balance Due ${to ? "as on " + fmtDate(to) : "(overall)"}${dueAsOf<0 ? " — credit (overpaid)" : ""}</div>
-          <div class="value ${dueAsOf<=0?'settled':'owe'}">${fmtMoney(Math.abs(dueAsOf))}</div>
+          <div class="label">Balance Due ${to ? "as on " + fmtDate(to) : "(overall)"}</div>
+          <div class="value ${dueAsOf<=0?'settled':'owe'}">${fmtMoney(Math.max(dueAsOf,0))}</div>
         </div>
         <div style="text-align:right;">
           <div class="label">Period Load vs Paid</div>
@@ -1186,27 +983,24 @@
       </div>
 
       <div class="section-title">Load Received by Company ${from||to ? "(selected period)" : "(all time)"}</div>
-      <div class="page-sub" style="margin-top:-8px;margin-bottom:10px;">"Outstanding" is your all-time running balance per operator, regardless of the period filter above.</div>
       <div style="overflow-x:auto;">
       <table>
-        <thead><tr><th>Company</th><th>Entries</th><th style="text-align:right;">Amount</th><th style="text-align:right;">Outstanding</th><th>Share</th></tr></thead>
+        <thead><tr><th>Company</th><th>Entries</th><th style="text-align:right;">Amount</th><th>Share</th></tr></thead>
         <tbody>
           ${companyRows.map(r=>`
             <tr>
               <td><div class="co-label">${companyBadge(r.name,"sm")}<span>${r.name}</span></div></td>
               <td>${r.count}</td>
-              <td class="amount">${amountChip(r.sum,'load')}</td>
-              <td class="amount">${dueChip(r.due)}</td>
+              <td class="amount">${fmtMoney(r.sum)}</td>
               <td style="width:140px;">
-                <div style="background:var(--soft-fill-hover);border-radius:6px;height:8px;overflow:hidden;">
+                <div style="background:#EEF1F7;border-radius:6px;height:8px;overflow:hidden;">
                   <div style="width:${companyTotal? (r.sum/companyTotal*100):0}%;background:${r.color};height:100%;"></div>
                 </div>
               </td>
             </tr>`).join("")}
-          <tr style="background:var(--soft-fill);font-weight:700;">
+          <tr style="background:#FAFBFD;font-weight:700;">
             <td>Total</td><td>${companyRows.reduce((s,r)=>s+r.count,0)}</td>
-            <td class="amount">${amountChip(companyTotal,'load')}</td>
-            <td class="amount">${dueChip(companyRows.reduce((s,r)=>s+r.due,0))}</td><td></td>
+            <td class="amount">${fmtMoney(companyTotal)}</td><td></td>
           </tr>
         </tbody>
       </table>
@@ -1215,16 +1009,15 @@
       <div class="section-title">Payments Sent ${from||to ? "(selected period)" : "(all time)"}</div>
       <div style="overflow-x:auto;">
       <table>
-        <thead><tr><th>Date</th><th>Company</th><th>Method</th><th>Note</th><th style="text-align:right;">Amount</th></tr></thead>
+        <thead><tr><th>Date</th><th>Company</th><th>Note</th><th style="text-align:right;">Amount</th></tr></thead>
         <tbody>
           ${paymentsInPeriod.length ? paymentsInPeriod.map(e=>`
             <tr>
               <td>${fmtDate(e.date)}</td>
               <td><div class="co-label">${companyBadge(e.company,"sm")}<span>${e.company==='GENERAL'?'General':e.company}</span></div></td>
-              <td>${methodLabel(e.method)}${e.refNo?`<br><span style="font-size:11px;color:var(--text-muted);">Ref: ${escapeHtml(e.refNo)}</span>`:''}</td>
               <td style="color:var(--text-muted);">${e.note?escapeHtml(e.note):"—"}</td>
-              <td class="amount">${amountChip(e.amount,'payment')}</td>
-            </tr>`).join("") : `<tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:26px;">No payments in this period.</td></tr>`}
+              <td class="amount">${fmtMoney(e.amount)}</td>
+            </tr>`).join("") : `<tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:26px;">No payments in this period.</td></tr>`}
         </tbody>
       </table>
       </div>
@@ -1241,7 +1034,6 @@
 
   // ---------- init ----------
   (async function init(){
-    if(notConfigured){ document.getElementById("setupBanner").style.display = "flex"; }
     reportRange.from = todayStr().slice(0,8)+"01";
     await loadEntries();
     document.querySelector('.nav-item[data-tab="dashboard"]').classList.add("active");
