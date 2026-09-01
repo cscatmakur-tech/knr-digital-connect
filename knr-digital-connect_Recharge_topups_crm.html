@@ -138,6 +138,19 @@
   }
   .stat-card{position:relative;overflow:hidden;transition:box-shadow .15s ease;}
   .stat-card:hover{box-shadow:0 8px 22px rgba(16,33,61,0.08);}
+  .stat-card.due.owe{background:var(--danger);border-color:var(--danger);}
+  .stat-card.due.owe .stat-label,.stat-card.due.owe .stat-value,.stat-card.due.owe .stat-note{color:#fff;}
+  .stat-card.due.credit{background:var(--success);border-color:var(--success);}
+  .stat-card.due.credit .stat-label,.stat-card.due.credit .stat-value,.stat-card.due.credit .stat-note{color:#fff;}
+  .month-nav{display:flex;align-items:center;gap:10px;}
+  .month-nav button{
+    width:32px;height:32px;border-radius:8px;border:1.5px solid var(--border);background:var(--soft-fill);
+    color:var(--text);font-size:16px;line-height:1;cursor:pointer;
+  }
+  .month-nav button:hover{border-color:var(--accent);color:var(--accent);}
+  .month-nav .label{font-weight:700;font-size:13.5px;min-width:132px;text-align:center;}
+  .month-nav .today-btn{width:auto;padding:0 12px;font-size:12px;font-weight:600;}
+  .company-card{cursor:pointer;}
   .stat-label{font-size:12.5px;color:var(--text-muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em;}
   .stat-value{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:26px;margin-top:8px;}
   .stat-note{font-size:12px;color:var(--text-muted);margin-top:6px;}
@@ -419,6 +432,7 @@
     <div class="sidebar-footer">
       Data is saved to your Google Drive and stays in sync across your devices.
       <button id="installBtn">📲 Add to Home Screen</button>
+      <button id="changePwBtn">🔑 Change Password</button>
       <button id="lockNowBtn">🔒 Lock now</button>
       <button id="resetBtn">Reset all data</button>
     </div>
@@ -456,6 +470,29 @@
     </div>
     <div class="modal-actions">
       <button class="cancel" id="installClose">Got it</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="pwModalOverlay">
+  <div class="modal">
+    <h3>Change Password</h3>
+    <div class="field">
+      <label>Current password</label>
+      <input type="password" id="pwCurrent" autocomplete="off">
+    </div>
+    <div class="field">
+      <label>New password</label>
+      <input type="password" id="pwNew" autocomplete="off">
+    </div>
+    <div class="field">
+      <label>Confirm new password</label>
+      <input type="password" id="pwConfirm" autocomplete="off">
+    </div>
+    <div class="page-sub" style="margin-bottom:14px;">This only changes the password on this device/browser. Repeat on your other device if you want them to match.</div>
+    <div class="modal-actions">
+      <button class="cancel" id="pwCancel">Cancel</button>
+      <button class="confirm" id="pwSave">Save Password</button>
     </div>
   </div>
 </div>
@@ -574,42 +611,56 @@
 
   // ============================================================
   // APP PASSWORD — a simple lock screen so casual/family members
-  // can't open the ledger without a password. Change "1234" below
-  // to whatever you want. NOTE: this is a basic deterrent, not
-  // bank-grade security — it's a plain check inside the page code,
-  // since there's no server involved. Good enough to stop someone
-  // from casually opening the file, not a secure login system.
+  // can't open the ledger without a password. NOTE: this is a basic
+  // deterrent, not bank-grade security — it's a plain check inside
+  // the page code, since there's no server involved. Good enough to
+  // stop someone from casually opening the file, not a secure login
+  // system.
+  //
+  // DEFAULT_PASSWORD below is the fallback. The person can change it
+  // from Settings → Change Password inside the app, which saves the
+  // new password in THIS BROWSER/DEVICE only (localStorage) — it does
+  // not sync to other devices, so change it separately on each device
+  // if you want them to match, or just leave the default and edit the
+  // line below in the code for a password shared across all devices.
   //
   // By design, the unlock state is kept only in memory (not saved
   // anywhere) — so the lock screen reappears on every refresh, every
   // re-open of the app, AND automatically after 5 minutes of no
   // activity while the app is open.
   // ============================================================
-  const APP_PASSWORD = "1234";
-  const IDLE_LOCK_MS = 5 * 60 * 1000; // 5 minutes
+  const DEFAULT_PASSWORD = "1234";
+  const IDLE_LOCK_MS = 5 * 60 * 1000;   // 5 minutes
+  const IDLE_WARN_MS = IDLE_LOCK_MS - 30*1000; // warn 30s before locking
+
+  function getPassword(){ return localStorage.getItem("knr_pw") || DEFAULT_PASSWORD; }
+  function setPassword(p){ localStorage.setItem("knr_pw", p); }
 
   const lockOverlay = document.getElementById("lockOverlay");
   const lockInput = document.getElementById("lockInput");
   const lockError = document.getElementById("lockError");
-  let idleTimer = null;
+  let idleTimer = null, idleWarnTimer = null;
 
   function lockNow(){
     lockOverlay.classList.remove("hidden");
     lockInput.value = "";
     lockError.textContent = "";
     if(idleTimer) clearTimeout(idleTimer);
+    if(idleWarnTimer) clearTimeout(idleWarnTimer);
     setTimeout(()=>lockInput.focus(), 100);
   }
 
   function resetIdleTimer(){
     if(idleTimer) clearTimeout(idleTimer);
+    if(idleWarnTimer) clearTimeout(idleWarnTimer);
     if(lockOverlay.classList.contains("hidden")){
+      idleWarnTimer = setTimeout(()=>showToast("Locking in 30 seconds due to inactivity…"), IDLE_WARN_MS);
       idleTimer = setTimeout(lockNow, IDLE_LOCK_MS);
     }
   }
 
   function tryUnlock(){
-    if(lockInput.value === APP_PASSWORD){
+    if(lockInput.value === getPassword()){
       lockOverlay.classList.add("hidden");
       lockError.textContent = "";
       resetIdleTimer();
@@ -630,6 +681,26 @@
   });
 
   document.getElementById("lockNowBtn").onclick = lockNow;
+
+  const pwOverlay = document.getElementById("pwModalOverlay");
+  document.getElementById("changePwBtn").onclick = ()=>{
+    document.getElementById("pwCurrent").value = "";
+    document.getElementById("pwNew").value = "";
+    document.getElementById("pwConfirm").value = "";
+    pwOverlay.classList.add("show");
+  };
+  document.getElementById("pwCancel").onclick = ()=> pwOverlay.classList.remove("show");
+  document.getElementById("pwSave").onclick = ()=>{
+    const cur = document.getElementById("pwCurrent").value;
+    const next = document.getElementById("pwNew").value;
+    const confirmVal = document.getElementById("pwConfirm").value;
+    if(cur !== getPassword()){ showToast("Current password is incorrect"); return; }
+    if(!next || next.length < 4){ showToast("New password must be at least 4 characters"); return; }
+    if(next !== confirmVal){ showToast("New passwords don't match"); return; }
+    setPassword(next);
+    pwOverlay.classList.remove("show");
+    showToast("Password updated on this device");
+  };
 
   // ---------- Register service worker (enables real "Install App" prompt
   // once this page is hosted online over https, e.g. GitHub Pages) ----------
@@ -658,7 +729,8 @@
   let entries = [];
   let activeTab = "dashboard";
   let entryType = "load";
-  let ledgerFilters = {type:"all", company:"all", from:"", to:""};
+  let ledgerFilters = {type:"all", company:"all", from:"", to:"", search:""};
+  let dashboardMonth = null; // set to current month once todayStr() is available
   let reportRange = {from:"", to:"", preset:"month"};
   let editingId = null;
   let deletingId = null;
@@ -687,6 +759,18 @@
     const d = new Date();
     return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
   }
+  function monthLabel(ym){
+    const [y,m] = ym.split("-").map(Number);
+    return new Date(y, m-1, 1).toLocaleDateString("en-IN", {month:"long", year:"numeric"});
+  }
+  function shiftMonth(ym, delta){
+    const [y,m] = ym.split("-").map(Number);
+    const d = new Date(y, m-1+delta, 1);
+    return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0");
+  }
+  function inMonth(e, ym){
+    return e.date && e.date.slice(0,7) === ym;
+  }
   function companyColor(name){
     const c = COMPANIES.find(c=>c.name===name);
     return c ? c.color : "#94A3B8";
@@ -705,6 +789,32 @@
   }
   function countChip(n){
     return `<span class="count-chip">${n}</span>`;
+  }
+  function exportCSV(list){
+    const rows = [["Date","Type","Company","Amount","Method","Reference No","Note"]];
+    list.forEach(e=>{
+      rows.push([
+        e.date, e.type==="load"?"Load Received":"Payment Sent",
+        e.company==='GENERAL'?'General':e.company,
+        e.amount, e.type==="payment"?methodLabel(e.method):"", e.refNo||"", e.note||""
+      ]);
+    });
+    const csv = rows.map(r=> r.map(v=>{
+      const s = String(v==null?"":v);
+      return /[",\n]/.test(s) ? `"${s.replace(/"/g,'""')}"` : s;
+    }).join(",")).join("\r\n");
+    const blob = new Blob(["\uFEFF"+csv], {type:"text/csv;charset=utf-8;"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `KNR-Ledger-${todayStr()}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+  function findDuplicate(type, company, amount, date){
+    return entries.find(e=> e.type===type && e.company===company && Number(e.amount)===Number(amount) && e.date===date);
   }
 
   // ---------- storage (Google Sheets via Apps Script — free, in your Drive) ----------
@@ -769,22 +879,29 @@
 
   // ---------- DASHBOARD ----------
   function renderDashboard(){
-    const t = totals(entries);
+    if(!dashboardMonth) dashboardMonth = todayStr().slice(0,7);
+    const tAll = totals(entries); // all-time, for Balance Due (carries forward)
+    const monthEntries = entries.filter(e=>inMonth(e, dashboardMonth));
+    const tMonth = totals(monthEntries); // this selected month only, for the two totals cards
+
     const sorted = [...entries].sort((a,b)=> b.date.localeCompare(a.date) || b.ts-a.ts);
     const recent = sorted.slice(0,8);
 
     let companyCards = COMPANIES.map(c=>{
-      const loadList = entries.filter(e=>e.type==="load" && e.company===c.name);
-      const loadSum = loadList.reduce((s,e)=>s+Number(e.amount),0);
-      const paidList = entries.filter(e=>e.type==="payment" && e.company===c.name);
-      const paidSum = paidList.reduce((s,e)=>s+Number(e.amount),0);
-      const due = loadSum - paidSum;
-      return `<div class="company-card">
+      const loadListMonth = monthEntries.filter(e=>e.type==="load" && e.company===c.name);
+      const loadSumMonth = loadListMonth.reduce((s,e)=>s+Number(e.amount),0);
+      const paidListMonth = monthEntries.filter(e=>e.type==="payment" && e.company===c.name);
+      const paidSumMonth = paidListMonth.reduce((s,e)=>s+Number(e.amount),0);
+      // Outstanding is always all-time (carries forward across months)
+      const loadAll = entries.filter(e=>e.type==="load" && e.company===c.name).reduce((s,e)=>s+Number(e.amount),0);
+      const paidAll = entries.filter(e=>e.type==="payment" && e.company===c.name).reduce((s,e)=>s+Number(e.amount),0);
+      const due = loadAll - paidAll;
+      return `<div class="company-card" data-company="${c.name}">
         <div class="company-head">${companyBadge(c.name,"md")}<span>${c.name}</span></div>
-        <div class="company-row"><span>Load received</span>${amountChip(loadSum,'load')}</div>
-        <div class="company-row"><span>Paid</span>${amountChip(paidSum,'payment')}</div>
-        <div class="company-row"><span>Outstanding</span>${dueChip(due)}</div>
-        <div class="company-row"><span>Entries</span>${countChip(loadList.length + paidList.length)}</div>
+        <div class="company-row"><span>Load received</span>${amountChip(loadSumMonth,'load')}</div>
+        <div class="company-row"><span>Paid</span>${amountChip(paidSumMonth,'payment')}</div>
+        <div class="company-row"><span>Outstanding (all-time)</span>${dueChip(due)}</div>
+        <div class="company-row"><span>Entries this month</span>${countChip(loadListMonth.length + paidListMonth.length)}</div>
       </div>`;
     }).join("");
 
@@ -802,39 +919,59 @@
       </div>`).join("") :
       `<div class="empty-state"><div class="signal-bars"><span></span><span></span><span></span><span></span></div>No entries yet. Add your first load or payment from "New Entry".</div>`;
 
+    const dueCls = tAll.due>0 ? 'owe' : (tAll.due<0 ? 'credit' : '');
+
     root.innerHTML = `
       <div class="topbar">
         <div>
           <h1 class="page-title">Dashboard</h1>
           <div class="page-sub">Overview of load received and payments across all companies</div>
         </div>
+        <div class="month-nav">
+          <button id="monthPrev" title="Previous month">‹</button>
+          <div class="label">${monthLabel(dashboardMonth)}</div>
+          <button id="monthNext" title="Next month">›</button>
+          ${dashboardMonth !== todayStr().slice(0,7) ? `<button class="today-btn" id="monthToday">This month</button>` : ``}
+        </div>
       </div>
 
       <div class="grid cards3">
         <div class="card stat-card load">
           <div class="stat-label">Total Load Received</div>
-          <div class="stat-value">${fmtMoney(t.load)}</div>
-          <div class="stat-note">All-time, across ${COMPANIES.length} companies</div>
+          <div class="stat-value">${fmtMoney(tMonth.load)}</div>
+          <div class="stat-note">${monthLabel(dashboardMonth)}, across ${COMPANIES.length} companies</div>
         </div>
         <div class="card stat-card paid">
           <div class="stat-label">Total Paid to Distributor</div>
-          <div class="stat-value">${fmtMoney(t.payment)}</div>
-          <div class="stat-note">All-time payments sent</div>
+          <div class="stat-value">${fmtMoney(tMonth.payment)}</div>
+          <div class="stat-note">${monthLabel(dashboardMonth)} payments sent</div>
         </div>
-        <div class="card stat-card due">
+        <div class="card stat-card due ${dueCls}">
           <div class="stat-label">Balance Due</div>
-          <div class="stat-value" style="${t.due<=0?'color:var(--success)':''}">${t.due<0 ? fmtMoney(-t.due) : fmtMoney(t.due)}</div>
-          <div class="stat-note">${t.due<0 ? "Credit — you've overpaid" : (t.due===0 ? "You're fully settled" : "Owed to distributor")}</div>
+          <div class="stat-value">${tAll.due<0 ? fmtMoney(-tAll.due) : fmtMoney(tAll.due)}</div>
+          <div class="stat-note">${tAll.due<0 ? "Credit — you've overpaid (all-time)" : (tAll.due===0 ? "You're fully settled (all-time)" : "Owed to distributor (all-time, carried forward)")}</div>
         </div>
       </div>
 
-      <div class="section-title">Company-wise Load</div>
+      <div class="section-title">Company-wise Load — tap a company to see its full ledger</div>
       <div class="company-grid">${companyCards}</div>
       ${generalPaid>0 ? `<div style="margin-top:14px;font-size:12.5px;color:var(--text-muted);">ℹ️ ${fmtMoney(generalPaid)} was paid as "General" (not linked to a specific operator) — it lowers your overall Balance Due above, but isn't split into the operator cards.</div>` : ``}
 
       <div class="section-title">Recent Activity</div>
       <div class="tx-list">${txRows}</div>
     `;
+
+    document.getElementById("monthPrev").onclick = ()=>{ dashboardMonth = shiftMonth(dashboardMonth,-1); renderDashboard(); };
+    document.getElementById("monthNext").onclick = ()=>{ dashboardMonth = shiftMonth(dashboardMonth,1); renderDashboard(); };
+    const todayBtn = document.getElementById("monthToday");
+    if(todayBtn) todayBtn.onclick = ()=>{ dashboardMonth = todayStr().slice(0,7); renderDashboard(); };
+
+    document.querySelectorAll(".company-card").forEach(card=>{
+      card.onclick = ()=>{
+        ledgerFilters = {type:"all", company:card.dataset.company, from:"", to:"", search:""};
+        setActiveTab("ledger");
+      };
+    });
   }
 
   // ---------- NEW ENTRY ----------
@@ -932,6 +1069,12 @@
       if(!date){ showToast("Please pick a date"); return; }
       if(!amount || amount<=0){ showToast("Please enter a valid amount"); return; }
 
+      const dup = findDuplicate(entryType, company, amount, date);
+      if(dup){
+        const ok = confirm(`A ${entryType==='load'?'load':'payment'} entry for ${company==='GENERAL'?'General':company} — ${fmtMoney(amount)} on ${fmtDate(date)} already exists.\n\nAdd it again anyway?`);
+        if(!ok) return;
+      }
+
       const btn = document.getElementById("fSave");
       btn.textContent = "Saving…";
       btn.disabled = true;
@@ -952,6 +1095,11 @@
       if(ledgerFilters.type!=="all" && e.type!==ledgerFilters.type) return false;
       if(ledgerFilters.company!=="all" && e.company!==ledgerFilters.company) return false;
       if(!inRange(e, ledgerFilters.from, ledgerFilters.to)) return false;
+      if(ledgerFilters.search){
+        const q = ledgerFilters.search.toLowerCase();
+        const hay = [e.company, e.note, e.refNo, methodLabel(e.method)].join(" ").toLowerCase();
+        if(!hay.includes(q)) return false;
+      }
       return true;
     }).sort((a,b)=> b.date.localeCompare(a.date) || b.ts-a.ts);
 
@@ -961,9 +1109,14 @@
           <h1 class="page-title">Ledger</h1>
           <div class="page-sub">${list.length} entr${list.length===1?'y':'ies'} · edit or remove any record</div>
         </div>
+        <button class="chip-btn" id="exportCsvBtn">⬇️ Export CSV</button>
       </div>
 
       <div class="filter-bar">
+        <div class="field grow">
+          <label>Search</label>
+          <input type="text" id="lfSearch" placeholder="Search company, note, or ref number…" value="${escapeHtml(ledgerFilters.search||'')}">
+        </div>
         <div class="field">
           <label>Type</label>
           <select id="lfType">
@@ -1003,6 +1156,8 @@
       </div>
     `;
 
+    document.getElementById("exportCsvBtn").onclick = ()=> exportCSV(list);
+
     function rowHtml(e){
       return `<tr data-id="${e.id}">
         <td>${fmtDate(e.date)}</td>
@@ -1032,7 +1187,18 @@
     document.getElementById("lfCompany").onchange = e=>{ ledgerFilters.company=e.target.value; renderLedger(); };
     document.getElementById("lfFrom").onchange = e=>{ ledgerFilters.from=e.target.value; renderLedger(); };
     document.getElementById("lfTo").onchange = e=>{ ledgerFilters.to=e.target.value; renderLedger(); };
-    document.getElementById("lfClear").onclick = ()=>{ ledgerFilters={type:"all",company:"all",from:"",to:""}; renderLedger(); };
+    let searchDebounce;
+    document.getElementById("lfSearch").oninput = e=>{
+      clearTimeout(searchDebounce);
+      const val = e.target.value;
+      searchDebounce = setTimeout(()=>{
+        ledgerFilters.search=val;
+        renderLedger();
+        const el = document.getElementById("lfSearch");
+        if(el){ el.focus(); el.setSelectionRange(el.value.length, el.value.length); }
+      }, 300);
+    };
+    document.getElementById("lfClear").onclick = ()=>{ ledgerFilters={type:"all",company:"all",from:"",to:"",search:""}; renderLedger(); };
 
     document.querySelectorAll(".icon-btn.edit").forEach(b=> b.onclick=()=>openEdit(b.dataset.id));
     document.querySelectorAll(".icon-btn.del").forEach(b=> b.onclick=()=>openDelete(b.dataset.id));
