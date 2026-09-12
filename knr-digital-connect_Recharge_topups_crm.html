@@ -729,6 +729,7 @@
   let entries = [];
   let activeTab = "dashboard";
   let entryType = "load";
+  let paymentMade = false; // for Load Received entries — was the distributor paid at the same time?
   let ledgerFilters = {type:"all", company:"all", from:"", to:"", search:""};
   let dashboardMonth = null; // set to current month once todayStr() is available
   let reportRange = {from:"", to:"", preset:"month"};
@@ -1015,6 +1016,36 @@
           <input type="number" class="mono" id="fAmount" min="0" step="1" placeholder="e.g. 5000">
         </div>
 
+        ${entryType==='load' ? `
+        <div class="field">
+          <label>Did you pay the distributor for this load already?</label>
+          <div class="type-toggle" style="max-width:280px;">
+            <button type="button" class="type-btn ${!paymentMade?'active load':''}" id="btnPayNo">No, not yet</button>
+            <button type="button" class="type-btn payment ${paymentMade?'active payment':''}" id="btnPayYes">Yes, paid</button>
+          </div>
+        </div>
+        ${paymentMade ? `
+        <div class="field-row">
+          <div class="field">
+            <label>Amount Paid (₹)</label>
+            <input type="number" class="mono" id="fPaidAmount" min="0" step="1" placeholder="defaults to load amount above">
+          </div>
+          <div class="field">
+            <label>Payment Method</label>
+            <select id="fPayMethod">
+              <option value="CASH">Cash</option>
+              <option value="UPI">UPI</option>
+              <option value="NETBANKING">Net Banking</option>
+            </select>
+          </div>
+        </div>
+        <div class="field" id="fPayRefWrap" style="display:none;">
+          <label>Reference / Transaction No. (optional)</label>
+          <input type="text" id="fPayRefNo" placeholder="e.g. UPI ref or UTR number">
+        </div>
+        ` : ``}
+        ` : ``}
+
         ${entryType==='payment' ? `
         <div class="field-row">
           <div class="field">
@@ -1044,7 +1075,23 @@
     `;
 
     document.getElementById("btnTypeLoad").onclick = ()=>{ entryType="load"; renderEntry(); };
-    document.getElementById("btnTypePayment").onclick = ()=>{ entryType="payment"; renderEntry(); };
+    document.getElementById("btnTypePayment").onclick = ()=>{ entryType="payment"; paymentMade=false; renderEntry(); };
+
+    const btnPayNo = document.getElementById("btnPayNo");
+    const btnPayYes = document.getElementById("btnPayYes");
+    if(btnPayNo) btnPayNo.onclick = ()=>{ paymentMade=false; renderEntry(); };
+    if(btnPayYes) btnPayYes.onclick = ()=>{ paymentMade=true; renderEntry(); };
+
+    const fPayMethod = document.getElementById("fPayMethod");
+    const fPayRefWrap = document.getElementById("fPayRefWrap");
+    if(fPayMethod){
+      fPayMethod.onchange = ()=>{ fPayRefWrap.style.display = fPayMethod.value==="CASH" ? "none" : "block"; };
+    }
+    const fAmountEl = document.getElementById("fAmount");
+    const fPaidAmountEl = document.getElementById("fPaidAmount");
+    if(fPaidAmountEl && fAmountEl){
+      fPaidAmountEl.addEventListener("focus", ()=>{ if(!fPaidAmountEl.value && fAmountEl.value) fPaidAmountEl.value = fAmountEl.value; });
+    }
 
     const fCompany = document.getElementById("fCompany");
     const fPreview = document.getElementById("fCompanyPreview");
@@ -1066,8 +1113,18 @@
       const method = entryType==="payment" ? document.getElementById("fMethod").value : "";
       const refNo = (entryType==="payment" && method!=="CASH") ? document.getElementById("fRefNo").value.trim() : "";
 
+      // linked payment (only relevant when saving a Load entry with "Yes, paid")
+      let paidAmount = 0, payMethod = "", payRefNo = "";
+      if(entryType==="load" && paymentMade){
+        const paidInput = document.getElementById("fPaidAmount").value;
+        paidAmount = paidInput ? parseFloat(paidInput) : amount;
+        payMethod = document.getElementById("fPayMethod").value;
+        payRefNo = payMethod!=="CASH" ? document.getElementById("fPayRefNo").value.trim() : "";
+      }
+
       if(!date){ showToast("Please pick a date"); return; }
       if(!amount || amount<=0){ showToast("Please enter a valid amount"); return; }
+      if(entryType==="load" && paymentMade && (!paidAmount || paidAmount<=0)){ showToast("Please enter a valid amount paid"); return; }
 
       const dup = findDuplicate(entryType, company, amount, date);
       if(dup){
@@ -1079,13 +1136,24 @@
       btn.textContent = "Saving…";
       btn.disabled = true;
       await callApi("add", {entry:{id:uid(), type:entryType, date, company, amount, note, method, refNo, ts:Date.now()}});
-      showToast(entryType==="load" ? "Load entry saved" : "Payment recorded");
+      if(entryType==="load" && paymentMade){
+        await callApi("add", {entry:{
+          id:uid(), type:"payment", date, company, amount:paidAmount,
+          note: note ? `Paid on receiving load — ${note}` : "Paid on receiving load",
+          method:payMethod, refNo:payRefNo, ts:Date.now()+1
+        }});
+        showToast("Load entry + linked payment both saved");
+      } else {
+        showToast(entryType==="load" ? "Load entry saved" : "Payment recorded");
+      }
       document.getElementById("fAmount").value = "";
       document.getElementById("fNote").value = "";
       if(document.getElementById("fRefNo")) document.getElementById("fRefNo").value = "";
       if(fMethod){ fMethod.value = "CASH"; fRefWrap.style.display = "none"; }
+      paymentMade = false;
       btn.textContent = `Save ${entryType==='load' ? 'Load Entry' : 'Payment'}`;
       btn.disabled = false;
+      renderEntry();
     };
   }
 
